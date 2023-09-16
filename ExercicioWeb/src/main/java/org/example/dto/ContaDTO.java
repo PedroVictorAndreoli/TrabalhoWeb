@@ -1,15 +1,15 @@
-package org.example.model;
+package org.example.dto;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.example.enumList.TipoConta;
-
-@Entity
+import org.example.model.Usuario;
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Conta {
+@AllArgsConstructor
+@Builder
+public class ContaDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +17,7 @@ public class Conta {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     @Getter
     @Setter
-    private Usuario usuario;
+    private UsuarioDTO usuario;
     @NotNull
     private String numero;
     @NotNull

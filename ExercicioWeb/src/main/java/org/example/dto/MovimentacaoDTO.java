@@ -1,26 +1,28 @@
-package org.example.model;
+package org.example.dto;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.enumList.SituacaoMovimentacao;
 import org.example.enumList.TipoMovimentacao;
+import org.example.model.Conta;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Movimentacao {
+@AllArgsConstructor
+@Builder
+public class MovimentacaoDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @NotNull
-    private Conta conta;
+    private ContaDTO conta;
     @NotNull
     private double valor;
     @NotNull
