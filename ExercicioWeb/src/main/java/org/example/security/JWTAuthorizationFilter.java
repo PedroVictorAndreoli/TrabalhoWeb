@@ -2,7 +2,7 @@ package org.example.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.example.Service.AuthService;
+import org.example.service.AuthService;
 import org.example.model.Usuario;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import jakarta.validation.Valid;
-import org.example.Service.UsuarioService;
+import org.example.service.UsuarioService;
 import org.example.model.Usuario;
 import org.example.shared.GenericResponse;
 import org.springframework.web.bind.annotation.*;

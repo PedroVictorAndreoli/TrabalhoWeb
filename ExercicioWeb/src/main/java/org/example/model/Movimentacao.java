@@ -20,6 +20,7 @@ public class Movimentacao {
     private Long id;
     @ManyToOne
     @NotNull
+    @JoinColumn(name = "conta_id", referencedColumnName = "id")
     private Conta conta;
     @NotNull
     private double valor;

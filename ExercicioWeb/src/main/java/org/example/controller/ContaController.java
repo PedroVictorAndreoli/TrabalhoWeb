@@ -1,22 +1,11 @@
 package org.example.controller;
 
-import jakarta.validation.Valid;
-import org.example.Service.IContaService;
-import org.example.Service.ICrudService;
-import org.example.Service.Impl.ContaService;
+import org.example.service.IContaService;
+import org.example.service.ICrudService;
 import org.example.dto.ContaDTO;
 import org.example.model.Conta;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("contas")

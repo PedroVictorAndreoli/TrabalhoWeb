@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import jakarta.validation.Valid;
-import org.example.Service.ICrudService;
+import org.example.service.ICrudService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -72,14 +72,14 @@ public abstract class CrudController <T, D, ID extends Serializable> {
     }
 
     @PostMapping
-    public ResponseEntity<D> create(@RequestBody @Valid D entity) {
+    public ResponseEntity<D> create(@RequestBody @Valid D entity) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(convertToDto(getService().save(convertToEntity(entity))));
 
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<D> update(@PathVariable ID id, @RequestBody @Valid D entity) {
+    public ResponseEntity<D> update(@PathVariable ID id, @RequestBody @Valid D entity) throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(convertToDto(getService().save(convertToEntity(entity))));
 

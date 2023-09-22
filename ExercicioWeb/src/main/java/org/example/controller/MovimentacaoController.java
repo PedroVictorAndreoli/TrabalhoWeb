@@ -1,23 +1,11 @@
 package org.example.controller;
 
-import jakarta.validation.Valid;
-import org.example.Service.ICrudService;
-import org.example.Service.Impl.MovimentacaoService;
-import org.example.dto.ContaDTO;
+import org.example.service.ICrudService;
+import org.example.service.Impl.MovimentacaoService;
 import org.example.dto.MovimentacaoDTO;
-import org.example.model.Conta;
 import org.example.model.Movimentacao;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("movimentacoes")

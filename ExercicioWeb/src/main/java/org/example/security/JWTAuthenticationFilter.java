@@ -7,7 +7,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
-import org.example.Service.AuthService;
+import org.example.service.AuthService;
 import org.example.model.Usuario;
 import org.example.security.dto.AuthenticationResponse;
 import org.example.security.dto.UserResponseDTO;

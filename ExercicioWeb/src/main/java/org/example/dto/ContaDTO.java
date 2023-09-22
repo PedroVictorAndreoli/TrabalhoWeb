@@ -13,11 +13,6 @@ public class ContaDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    @Getter
-    @Setter
-    private UsuarioDTO usuario;
     @NotNull
     private String numero;
     @NotNull
@@ -27,4 +22,5 @@ public class ContaDTO {
     @NotNull
     @Enumerated(EnumType.STRING)
     private TipoConta tipoConta;
+    private Usuario usuario;
 }
