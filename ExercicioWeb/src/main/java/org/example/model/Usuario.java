@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.example.annotation.UnicoUsername;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,7 @@ public class Usuario  implements UserDetails {
     private Long id;
 
     @NotNull
+    @UnicoUsername
     private String username;
 
     @NotNull
