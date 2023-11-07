@@ -1,4 +1,4 @@
-package org.example.Service;
+package org.example.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +15,7 @@ public interface ICrudService <T, ID extends Serializable> {
 
     Page<T> findAll(Pageable pageable);
 
-    T save(T entity);
+    T save(T entity) throws Exception;
 
     T saveAndFlush(T entity);
 

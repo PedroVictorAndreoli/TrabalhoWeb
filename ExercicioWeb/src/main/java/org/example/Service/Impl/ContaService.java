@@ -1,25 +1,33 @@
-package org.example.Service.Impl;
+package org.example.service.Impl;
 
-import org.example.Service.IContaService;
+import org.example.model.Usuario;
+import org.example.repository.UsuarioRepository;
+import org.example.service.IContaService;
 import org.example.model.Conta;
 import org.example.repository.ContaRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.example.shared.GenericResponse;
+import org.example.validator.ContaValidator;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ContaService  extends CrudService<Conta, Long>
         implements IContaService{
 
     private final ContaRepository contaRepository;
+    private final UsuarioRepository usuarioRepository;
+    private ContaValidator contaValidator;
 
-    public ContaService(ContaRepository contaRepository) {
+    public ContaService(ContaRepository contaRepository, UsuarioRepository usuarioRepository, ContaValidator contaValidator) {
         this.contaRepository = contaRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.contaValidator = contaValidator;
     }
+
 
 
     @Override
@@ -27,10 +35,20 @@ public class ContaService  extends CrudService<Conta, Long>
         return contaRepository;
     }
 
-    public Conta findContaByAgenciaAndNumero(String agencia, String numero){
-        List<Conta> contas = new ArrayList<>();
-        contas = contaRepository.findAll();
-        contas.stream().filter(conta1 -> conta1.getAgencia().equals(agencia) && conta1.getNumero().equals(numero)).findFirst().stream().toList();
-        return contas.get(0);
+    @Override
+    public Conta save(Conta conta) throws Exception {
+        Usuario user = usuarioRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        conta.setUsuario(user);
+        if (contaValidator.isValid(conta))
+            return super.save(conta);
+        else
+            throw new Exception(contaValidator.getMensagem());
     }
+
+   @Override
+    public List<Conta> findAll(){
+       Usuario user = usuarioRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+       //return contaRepository.findAll().stream().filter(conta -> conta.getUsuario() == user).collect(Collectors.toList());
+       return contaRepository.findContaByUsuario(user);
+   }
 }

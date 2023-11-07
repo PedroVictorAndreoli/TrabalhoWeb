@@ -1,6 +1,6 @@
-package org.example.Service.Impl;
+package org.example.service.Impl;
 
-import org.example.Service.ICrudService;
+import org.example.service.ICrudService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,7 +30,7 @@ public abstract class CrudService<T, ID extends Serializable>
     }
 
     @Override
-    public T save(T entity) {
+    public T save(T entity) throws Exception {
         return getRepository().save(entity);
     }
 
