@@ -1,7 +1,8 @@
 package org.example.controller;
 
-import org.example.service.ICrudService;
-import org.example.service.Impl.MovimentacaoService;
+import org.example.Service.Impl.MovimentacaoService;
+import org.example.Service.ICrudService;
+import org.example.Service.Impl.MovimentacaoService;
 import org.example.dto.MovimentacaoDTO;
 import org.example.model.Movimentacao;
 import org.modelmapper.ModelMapper;

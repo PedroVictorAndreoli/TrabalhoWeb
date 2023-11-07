@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.example.enumList.SituacaoMovimentacao;
 import org.example.enumList.TipoMovimentacao;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,7 +26,7 @@ public class Movimentacao {
     @NotNull
     private double valor;
     @NotNull
-    private LocalDateTime data;
+    private LocalDate data;
     @NotNull
     private String categoria;
     private String descricao;

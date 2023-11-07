@@ -1,7 +1,7 @@
-package org.example.service;
+package org.example.Service;
 
 import org.example.model.Movimentacao;
 
-public interface IMovimentacaoService extends ICrudService<Movimentacao, Long>{
+public interface IMovimentacaoService extends ICrudService<Movimentacao, Long> {
 
 }

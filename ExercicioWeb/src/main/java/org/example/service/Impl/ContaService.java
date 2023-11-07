@@ -1,8 +1,8 @@
-package org.example.service.Impl;
+package org.example.Service.Impl;
 
 import org.example.model.Usuario;
 import org.example.repository.UsuarioRepository;
-import org.example.service.IContaService;
+import org.example.Service.IContaService;
 import org.example.model.Conta;
 import org.example.repository.ContaRepository;
 import org.example.shared.GenericResponse;

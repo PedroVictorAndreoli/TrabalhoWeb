@@ -1,6 +1,6 @@
-package org.example.service.Impl;
+package org.example.Service.Impl;
 
-import org.example.service.ICrudService;
+import org.example.Service.ICrudService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

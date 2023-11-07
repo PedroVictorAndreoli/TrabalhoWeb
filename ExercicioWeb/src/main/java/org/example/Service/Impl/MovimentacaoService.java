@@ -1,10 +1,10 @@
-package org.example.service.Impl;
+package org.example.Service.Impl;
 
 import org.example.model.Conta;
 import org.example.model.Usuario;
 import org.example.repository.ContaRepository;
 import org.example.repository.UsuarioRepository;
-import org.example.service.IMovimentacaoService;
+import org.example.Service.IMovimentacaoService;
 import org.example.model.Movimentacao;
 import org.example.repository.MovimentacaoRepository;
 import org.springframework.data.jpa.repository.JpaRepository;

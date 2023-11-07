@@ -1,7 +1,7 @@
 package org.example.controller;
 
-import org.example.service.IContaService;
-import org.example.service.ICrudService;
+import org.example.Service.IContaService;
+import org.example.Service.ICrudService;
 import org.example.dto.ContaDTO;
 import org.example.model.Conta;
 import org.modelmapper.ModelMapper;

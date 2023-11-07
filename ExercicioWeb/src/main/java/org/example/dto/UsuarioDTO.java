@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.model.Usuario;
 
 @Data
 @NoArgsConstructor
@@ -30,4 +31,10 @@ public class UsuarioDTO {
     @Size(min = 6)
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
     private String senha;
+
+    public UsuarioDTO(Usuario user) {
+        this.id = user.getId();
+        this.nome= user.getNome();
+        this.username = user.getUsername();
+    }
 }

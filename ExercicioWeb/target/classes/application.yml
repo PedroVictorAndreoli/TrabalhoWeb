@@ -1,5 +1,5 @@
 server:
-  port: 8025
+  port: 8026
 spring:
   datasource:
     generate-unique-name: false

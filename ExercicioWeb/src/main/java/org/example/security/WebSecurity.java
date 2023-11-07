@@ -2,7 +2,7 @@ package org.example.security;
 
 
 import lombok.SneakyThrows;
-import org.example.service.AuthService;
+import org.example.Service.AuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
