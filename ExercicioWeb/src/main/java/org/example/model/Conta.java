@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.example.enumList.TipoConta;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Data
@@ -27,4 +29,7 @@ public class Conta {
     @NotNull
     @Enumerated(EnumType.STRING)
     private TipoConta tipoConta;
+    @NotNull
+    @Value("${some.key:0}")
+    private double saldo;
 }

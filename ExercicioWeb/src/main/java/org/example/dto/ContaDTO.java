@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.example.enumList.TipoConta;
 import org.example.model.Usuario;
+import org.springframework.beans.factory.annotation.Value;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,4 +25,6 @@ public class ContaDTO {
     @Enumerated(EnumType.STRING)
     private TipoConta tipoConta;
     private Usuario usuario;
+    @NotNull
+    private double saldo;
 }
