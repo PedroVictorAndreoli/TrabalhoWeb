@@ -22,10 +22,19 @@ public class UsuarioDTO {
     private Long id;
 
     @NotNull
+    private String username;
+
+    @NotNull
     private String nome;
+
+    @NotNull
+    @Size(min = 6)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
+    private String senha;
 
     public UsuarioDTO(Usuario user) {
         this.id = user.getId();
         this.nome= user.getNome();
+        this.username = user.getUsername();
     }
 }
