@@ -3,9 +3,14 @@ package org.example.controller;
 import org.example.Service.Impl.MovimentacaoService;
 import org.example.Service.ICrudService;
 import org.example.Service.Impl.MovimentacaoService;
+import org.example.dto.ContaDTO;
 import org.example.dto.MovimentacaoDTO;
+import org.example.enumList.TipoMovimentacao;
+import org.example.model.Conta;
 import org.example.model.Movimentacao;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +23,12 @@ public class MovimentacaoController extends CrudController<Movimentacao, Movimen
         super(Movimentacao.class, MovimentacaoDTO.class);
         this.movimentacaoService = movimentacaoService;
         this.modelMapper = modelMapper;
+    }
+
+    protected void movimentaSaldoConta(Movimentacao movimentacao, double valor){
+        Conta conta;
+        ResponseEntity.status(HttpStatus.OK)
+                .body(convertToDto(getService().save(convertToEntity(conta))));
     }
 
     @Override
