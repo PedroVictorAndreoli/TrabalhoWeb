@@ -2,6 +2,7 @@ package org.example.controller;
 
 import jakarta.validation.Valid;
 import org.example.Service.ICrudService;
+import org.example.model.Movimentacao;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class CrudController <T, D, ID extends Serializable> {
+
 
     protected abstract ICrudService<T, ID> getService();
     protected abstract ModelMapper getModelMapper();

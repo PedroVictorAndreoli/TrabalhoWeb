@@ -1,5 +1,6 @@
 package org.example.Service.Impl;
 
+import jakarta.persistence.Convert;
 import org.example.model.Usuario;
 import org.example.repository.UsuarioRepository;
 import org.example.Service.IContaService;
@@ -39,10 +40,10 @@ public class ContaService  extends CrudService<Conta, Long>
     public Conta save(Conta conta) throws Exception {
         Usuario user = usuarioRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         conta.setUsuario(user);
-        if (contaValidator.isValid(conta))
-            return super.save(conta);
-        else
-            throw new Exception(contaValidator.getMensagem());
+            if (contaValidator.isValid(conta))
+                return super.save(conta);
+            else
+                throw new Exception(contaValidator.getMensagem());
     }
 
    @Override

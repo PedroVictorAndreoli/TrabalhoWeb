@@ -28,6 +28,20 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
         this.usuarioRepository = usuarioRepository;
         this.contaRepository = contaRepository;
     }
+    protected void movimentaSaldoConta(Movimentacao movimentacao){
+        Conta conta = contaRepository.findOne(movimentacao.getConta()).orElse(null);
+        if(movimentacao.getTipoMovimentacao().equals("TransferenciaContasSaida") || movimentacao.getTipoMovimentacao().equals("Despesa"))
+            conta.setSaldo(conta.getSaldo() - movimentacao.getValor());
+        else if(movimentacao.getTipoMovimentacao().equals("TransferenciaContasEntrada") || movimentacao.getTipoMovimentacao().equals("Receita"))
+            conta.setSaldo(conta.getSaldo() + movimentacao.getValor());
+        contaRepository.save(conta);
+    }
+
+    @Override
+    public Movimentacao save(Movimentacao entity) throws Exception {
+        movimentaSaldoConta(entity);
+        return super.save(entity);
+    }
 
     @Override
     protected JpaRepository<Movimentacao, Long> getRepository() {

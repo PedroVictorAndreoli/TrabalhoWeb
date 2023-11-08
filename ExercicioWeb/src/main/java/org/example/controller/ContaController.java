@@ -4,7 +4,9 @@ import org.example.Service.IContaService;
 import org.example.Service.ICrudService;
 import org.example.dto.ContaDTO;
 import org.example.model.Conta;
+import org.example.model.Movimentacao;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +20,8 @@ public class ContaController  extends CrudController<Conta, ContaDTO, Long>{
         this.contaService = contaService;
         this.modelMapper = modelMapper;
     }
+
+
 
     @Override
     protected ICrudService<Conta, Long> getService() {
