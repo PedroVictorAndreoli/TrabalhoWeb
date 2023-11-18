@@ -29,10 +29,10 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
         this.contaRepository = contaRepository;
     }
     protected void movimentaSaldoConta(Movimentacao movimentacao){
-        Conta conta = contaRepository.findOne(movimentacao.getConta()).orElse(null);
-        if(movimentacao.getTipoMovimentacao().equals("TransferenciaContasSaida") || movimentacao.getTipoMovimentacao().equals("Despesa"))
+        Conta conta =  contaRepository.findContaById(movimentacao.getConta().getId());
+        if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasSaida") || movimentacao.getTipoMovimentacao().toString().equals("Despesa"))
             conta.setSaldo(conta.getSaldo() - movimentacao.getValor());
-        else if(movimentacao.getTipoMovimentacao().equals("TransferenciaContasEntrada") || movimentacao.getTipoMovimentacao().equals("Receita"))
+        else if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasEntrada") || movimentacao.getTipoMovimentacao().toString().equals("Receita"))
             conta.setSaldo(conta.getSaldo() + movimentacao.getValor());
         contaRepository.save(conta);
     }
