@@ -16,7 +16,6 @@
     "@devexpress/dx-react-grid-material-ui": "^4.0.6",
     "ra-data-fakerest": "^4.16.0",
     "react": "^18.2.0",
-    "react-admin": "^4.16.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
