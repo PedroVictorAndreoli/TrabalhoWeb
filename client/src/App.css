@@ -4,7 +4,12 @@
   padding: 2rem;
   text-align: center;
 }
-
+form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .logo {
   height: 6em;
   padding: 1.5em;

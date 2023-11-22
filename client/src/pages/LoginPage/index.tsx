@@ -69,7 +69,8 @@ export function LoginPage() {
   return (
     <>
       <main className="container">
-        <form>
+        
+        <form >
           <div className="text-center">
             <h1 className="h3 mb-3 fw-normal">Login</h1>
           </div>
@@ -86,17 +87,10 @@ export function LoginPage() {
               hasError={false}
               error=""
           />*/}
-            <Box
-              component="form"
-              sx={{
-                '& > :not(style)': { m: 1, width: '25ch' },
-              }}
-              noValidate
-              autoComplete="off"
-            >
 
-              <TextField id="standard-basic" label="Standard" variant="standard" />
-            </Box>
+
+            <TextField id="standard-basic" label="Standard" variant="standard" />
+
           </div>
 
           <div className="form-floating mb-3">
