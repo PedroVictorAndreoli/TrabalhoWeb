@@ -1,9 +1,11 @@
 import { IUserLogin } from "@/commons/interfaces";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
-import { Input } from "@/components/Input";
+//import { Input } from "@/components/Input";
 import AuthService from "@/services/AuthService";
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 export function LoginPage() {
   const [form, setForm] = useState({
@@ -73,7 +75,7 @@ export function LoginPage() {
           </div>
 
           <div className="form-floating mb-3">
-            <Input
+            {/*<Input
               label="Informe seu usuário"
               name="username"
               className="form-control"
@@ -83,7 +85,18 @@ export function LoginPage() {
               onChange={onChange}
               hasError={false}
               error=""
-            />
+          />*/}
+            <Box
+              component="form"
+              sx={{
+                '& > :not(style)': { m: 1, width: '25ch' },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+
+              <TextField id="standard-basic" label="Standard" variant="standard" />
+            </Box>
           </div>
 
           <div className="form-floating mb-3">
