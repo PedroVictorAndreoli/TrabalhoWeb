@@ -101,6 +101,9 @@ export function LoginPage() {
               }
               error=""
               type="password"
+              label=""
+              value=""
+              hasError={false}
               placeholder="Informe sua senha"
               onChange={onChange}
             />
