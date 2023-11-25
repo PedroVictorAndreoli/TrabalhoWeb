@@ -1,4 +1,3 @@
-
 interface InputProps {
     name: string;
     className: string;
@@ -10,10 +9,11 @@ interface InputProps {
     error: string;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   }
+
+  import TextField from '@mui/material/TextField';
   export function Input({
     name,
     className,
-    label,
     type,
     placeholder,
     value,
@@ -26,18 +26,19 @@ interface InputProps {
       inputClassName += hasError ? " is-invalid" : " is-valid";
     }
     return (
+      
       <>
-        <input
+        <TextField
           name={name}
-          className={inputClassName}
           type={type}
           placeholder={placeholder}
           onChange={onChange}
+          label = {name}
           value={value}
+          variant="standard"
         />      
-        {label && <label htmlFor={name}>{label}</label>}
+        
         {hasError && <div className="invalid-feedback">{error}</div>}
       </>
     );
   }
-  
