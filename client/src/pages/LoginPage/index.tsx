@@ -1,4 +1,15 @@
+<<<<<<< HEAD
 import { Edit, SimpleForm, TextInput, required } from 'react-admin';
+=======
+import { IUserLogin } from "@/commons/interfaces";
+import { ButtonWithProgress } from "@/components/ButtonWithProgress";
+//import { Input } from "@/components/Input";
+import AuthService from "@/services/AuthService";
+import { ChangeEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+>>>>>>> parent of bd2801f (começo)
 
 export function LoginPage() {
   return (
@@ -23,7 +34,7 @@ export function LoginPage() {
           </div>
 
           <div className="form-floating mb-3">
-            <Input
+            {/*<Input
               label="Informe seu usuário"
               name="username"
               className="form-control"
@@ -33,24 +44,24 @@ export function LoginPage() {
               onChange={onChange}
               hasError={false}
               error=""
-          />
+          />*/}
 
 
-            
+            <TextField id="standard-basic" label="Standard" variant="standard" />
 
           </div>
 
           <div className="form-floating mb-3">
-            <Input
+            <input
               name="password"
               className={
                 errors.password ? "form-control is-invalid" : "form-control"
               }
-              error=""
               type="password"
               placeholder="Informe sua senha"
               onChange={onChange}
             />
+            <label htmlFor="password">Informe sua senha</label>
             {errors.password && (
               <div className="invalid-feedback">{errors.password}</div>
             )}
@@ -74,12 +85,11 @@ export function LoginPage() {
               <div className="alert alert-danger">{apiError}</div>
             </div>
           )}
-          <div className="text-center">
+        </form>
+        <div className="text-center">
           <span>Não possui cadastro </span>
           <Link to="/signup">Cadastre-se aqui</Link>
         </div>
-        </form>
-        
       </main>
     </>
   );
