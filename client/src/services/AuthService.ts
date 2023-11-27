@@ -18,7 +18,7 @@ const logout = () => {
 }
 
 const signup = (user: IUserSignup) => { 
-    return api.post('/users', user);
+    return api.post('/usuarios', user);
 }
 
 const AuthService = {

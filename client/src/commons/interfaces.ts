@@ -1,12 +1,12 @@
 export interface IUserLogin {
     username: string;
-    password: string;
+    senha: string;
 }
 
 export interface IUserSignup {
-    displayName: string;
+    nome: string;
     username: string;
-    password: string;
+    senha: string;
 }
 
 export interface ICategory {

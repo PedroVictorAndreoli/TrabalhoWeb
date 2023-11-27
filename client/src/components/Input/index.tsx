@@ -36,6 +36,7 @@ interface InputProps {
           label = {name}
           value={value}
           variant="standard"
+         
         />      
         
         {hasError && <div className="invalid-feedback">{error}</div>}

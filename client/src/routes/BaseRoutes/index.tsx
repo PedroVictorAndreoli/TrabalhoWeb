@@ -1,5 +1,6 @@
-import { HomePage } from "@/pages/HomePage";
+import { Home } from "@/pages/HomePage";
 import { LoginPage } from "@/pages/LoginPage";
+import { CadastroUserPage } from "@/pages/CadastroUserPage";
 import { Route, Routes } from "react-router-dom";
 import { AuthenticatedRoutes } from "../AuthenticatedRoutes";
 
@@ -9,11 +10,11 @@ export function BaseRoutes() {
         <Routes>
             {/* Public Routes */}
             <Route path="/login" element={<LoginPage />} />
-            {/* <Route path="/signup" element={<UserSignupPage />} />*/}
+            <Route path="/cadastro" element={<CadastroUserPage />} />
 
             {/* Protected Routes */}
             <Route element={<AuthenticatedRoutes />}>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<Home />} />
 
                {/* <Route path="/categories" element={<CategoryListPage />} />
                 <Route path="/categories/new" element={<CategoryFormPage />} />

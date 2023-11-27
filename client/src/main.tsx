@@ -10,7 +10,7 @@ import '@fontsource/roboto/700.css';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import theme from './theme';
-import index from './index.css'
+
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

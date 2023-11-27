@@ -1,4 +1,4 @@
-import { IUserLogin } from "@/commons/interfaces";
+import { IUserSignup } from "@/commons/interfaces";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { Input } from "@/components/Input";
 import AuthService from "@/services/AuthService";
@@ -6,26 +6,25 @@ import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 
-
-export function LoginPage() {
+export function CadastroUserPage() {
   const [form, setForm] = useState({
+    nome: "",
     username: "",
-    password: "",
+    senha: "",
   });
   const [errors, setErrors] = useState({
+    nome: "",
     username: "",
-    password: "",
+    senha: "",
   });
   const [pendingApiCall, setPendingApiCall] = useState(false);
-  const [userAuthenticated, setUserAuthenticated] = useState("");
+  const [userSaved, setUserSaved] = useState("");
   const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
-  
 
-  
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    
+
     setForm((previousState) => {
       return {
         ...previousState,
@@ -41,26 +40,25 @@ export function LoginPage() {
     });
   };
 
-  const onClickLogin = () => {
+  const onClickSignup = () => {
     setPendingApiCall(true);
-    const userLogin: IUserLogin = {
+    const userSigup: IUserSignup = {
+      nome: form.nome,
       username: form.username,
-      senha: form.password,
+      senha: form.senha,
     };
-    AuthService.login(userLogin)
+    AuthService.signup(userSigup)
       .then((response) => {
-        setUserAuthenticated(response.data.token);
-        localStorage.setItem("token", JSON.stringify(response.data.token));
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        setUserSaved(response.data.message);
         setApiError("");
-        setPendingApiCall(false);
-        // direcionar o usuário para a página inicial
-        navigate("/");
+        navigate("/login");
       })
       .catch((responseError) => {
-        if (responseError.response.data) {
+        if (responseError.response.data.validationErrors) {
+          setErrors(responseError.response.data.validationErrors);
+
           setApiError(responseError.response.data.message);
-          setUserAuthenticated("");
+          setUserSaved("");
         }
       })
       .finally(() => {
@@ -71,10 +69,23 @@ export function LoginPage() {
   return (
     <>
       <main className="container">
-
-        <form >
+        <form>
           <div className="text-center">
-            <h1 className="h3 mb-3 fw-normal mt-3">Login</h1>
+            <h1 className="h3 mb-3 fw-normal mt-3 mx-5">Cadastra-se </h1>
+          </div>
+
+          <div className="form-floating mb-3">
+            <Input
+              label="Informe seu nome"
+              name="nome"
+              className="form-control"
+              type="text"
+              placeholder="Informe seu nome"
+              onChange={onChange}
+              value={form.nome}
+              hasError={errors.nome ? true : false}
+              error={errors.nome}
+            />
           </div>
 
           <div className="form-floating mb-3">
@@ -87,58 +98,56 @@ export function LoginPage() {
               value={form.username}
               onChange={onChange}
               hasError={false}
-              error=""
-            />
-
-
-
-
+              error=""/>
+            {errors.username && (
+              <div className="invalid-feedback">{errors.username}</div>
+            )}
           </div>
 
           <div className="form-floating mb-3">
             <Input
-              name="password"
+              name="senha"
               className={
-                errors.password ? "form-control is-invalid" : "form-control"
+                errors.senha ? "form-control is-invalid" : "form-control"
               }
               error=""
               type="password"
               label=""
-              value={form.password}
+              value={form.senha}
               hasError={true}
-              placeholder="Iforme sua senha"
+              placeholder="Informe sua senha"
               onChange={onChange}
             />
-            {errors.password && (
-              <div className="invalid-feedback">{errors.password}</div>
+            {errors.senha && (
+              <div className="invalid-feedback">{errors.senha}</div>
             )}
           </div>
-
+          <div className="text-center mx-3">
+          <span>Já possui cadastro? </span>
+          <Link to="/login">Autenticar-se</Link>
+          </div>
           <ButtonWithProgress
             disabled={pendingApiCall}
-            className="w-75 btn btn-lg btn-warning mb-3"
-            onClick={onClickLogin}
+            className="w-50 btn btn-lg btn-warning mb-3 mt-3"
+            onClick={onClickSignup}
             pendingApiCall={pendingApiCall}
-            text="Entrar"
+            text="Cadastrar"
           />
 
-          {userAuthenticated && (
+          {userSaved && (
             <div className="col-12 mb-3">
-              <div className="alert alert-success">{userAuthenticated}</div>
+              <div className="alert alert-success">{userSaved}</div>
             </div>
           )}
           {apiError && (
-             <div className="col-12 mb-3">
-               <div className="alert alert-danger">{apiError}
-               </div>
-             </div>
+            <div className="col-12 mb-3">
+              <div className="alert alert-danger">{apiError}</div>
+            </div>
           )}
-          <div className="text-center mb-3 mx-3">
-            <span>Não possui cadastro</span>
-            <Link to="/cadastro"> Cadastre-se aqui</Link>
-          </div>
+          
+        
         </form>
-
+        
       </main>
     </>
   );
