@@ -1,4 +1,4 @@
-import { IUserLogin } from "@/commons/interfaces";
+import { IUsuarioLogin} from "@/commons/interfaces";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { Input } from "@/components/Input";
 import AuthService from "@/services/AuthService";
@@ -43,7 +43,7 @@ export function LoginPage() {
 
   const onClickLogin = () => {
     setPendingApiCall(true);
-    const userLogin: IUserLogin = {
+    const userLogin: IUsuarioLogin = {
       username: form.username,
       senha: form.password,
     };

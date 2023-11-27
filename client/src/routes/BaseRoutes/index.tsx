@@ -1,5 +1,6 @@
 import { Home } from "@/pages/HomePage";
 import { LoginPage } from "@/pages/LoginPage";
+import { CadastroUserPage } from "@/pages/CadastroUserPage";
 import { Route, Routes } from "react-router-dom";
 import { AuthenticatedRoutes } from "../AuthenticatedRoutes";
 export function BaseRoutes() {
