@@ -1,7 +1,8 @@
-export interface IUserLogin {
+export interface IUsuarioLogin {
     username: string;
     senha: string;
 }
+
 
 export interface IUserSignup {
     nome: string;
@@ -20,4 +21,9 @@ export interface IProduct {
     description: string;
     price: number;
     category: ICategory;
+}
+export interface IUsuarioCadastro{
+    username: string;
+    nome: string;
+    senha: string;
 }

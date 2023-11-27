@@ -1,7 +1,7 @@
-import { IUserLogin, IUserSignup } from "@/commons/interfaces";
+import {IUsuarioCadastro, IUsuarioLogin} from "@/commons/interfaces";
 import { api } from "@/lib/axios";
 
-const login = (user: IUserLogin) => {
+const login = (user: IUsuarioLogin) => {
     return api.post('/login', user);
 }
 
@@ -17,7 +17,7 @@ const logout = () => {
     localStorage.removeItem('token');
 }
 
-const signup = (user: IUserSignup) => { 
+const signup = (user: IUsuarioCadastro) => { 
     return api.post('/usuarios', user);
 }
 
