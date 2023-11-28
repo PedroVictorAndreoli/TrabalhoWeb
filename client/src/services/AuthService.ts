@@ -1,4 +1,4 @@
-import {IUsuarioCadastro, IUsuarioLogin} from "@/commons/interfaces";
+import {IUsuarioCadastro, IUsuarioLogin,IContaCadastro} from "@/commons/interfaces";
 import { api } from "@/lib/axios";
 
 const login = (user: IUsuarioLogin) => {
@@ -20,11 +20,15 @@ const logout = () => {
 const signup = (user: IUsuarioCadastro) => { 
     return api.post('/usuarios', user);
 }
+const cadastroConta = (conta: IContaCadastro) =>{
+    return api.post('/contas',conta)
+}
 
 const AuthService = {
     login,
     isAuthenticated,
     logout,
+    cadastroConta,
     signup
 }
 

@@ -7,7 +7,6 @@ import TimelineRoundedIcon from "@mui/icons-material/TimelineRounded";
 import BubbleChartRoundedIcon from "@mui/icons-material/BubbleChartRounded";
 import WalletRoundedIcon from "@mui/icons-material/WalletRounded";
 import AccountBalanceRoundedIcon from "@mui/icons-material/AccountBalanceRounded";
-import SavingsRoundedIcon from "@mui/icons-material/SavingsRounded";
 import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
 import SettingsApplicationsRoundedIcon from "@mui/icons-material/SettingsApplicationsRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
@@ -25,11 +24,11 @@ export function MenuLateral() {
   function logoutUser(): void {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-}
+  }
 
-    return (
-      
-        <div style={{ display: "flex", height: "100vh" }}>
+  return (
+
+    <div style={{ display: "flex", height: "100vh" }}>
       <Sidebar className="app">
         <Menu>
           <MenuItem
@@ -51,7 +50,7 @@ export function MenuLateral() {
             <MenuItem icon={<BubbleChartRoundedIcon />}>Bubble Chart</MenuItem>
           </SubMenu>
           <SubMenu label="Carteira" icon={<WalletRoundedIcon />}>
-            <MenuItem icon={<AddCard />}>
+            <MenuItem icon={<AddCard />} component={<Link to="cadastroConta" className="link" />}>
               Cadastro de Conta
             </MenuItem>
             <MenuItem icon={<AccountBalanceRoundedIcon />}>Contas</MenuItem>
@@ -69,7 +68,7 @@ export function MenuLateral() {
               Notifications
             </MenuItem>
           </SubMenu>
-          <MenuItem icon={<LogoutRoundedIcon /> } component={<Link to="login" className="link" />} onClick={logoutUser}> Logout </MenuItem>
+          <MenuItem icon={<LogoutRoundedIcon />} component={<Link to="login" className="link" />} onClick={logoutUser}> Logout </MenuItem>
         </Menu>
       </Sidebar>
       <section>
@@ -78,6 +77,6 @@ export function MenuLateral() {
         </Routes>
       </section>
     </div>
-      
-    );
-  }
+
+  );
+}

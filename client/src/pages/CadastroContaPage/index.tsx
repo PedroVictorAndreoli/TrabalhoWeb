@@ -1,23 +1,38 @@
-import { IUsuarioCadastro } from "@/commons/interfaces";
+import {IContaCadastro} from "@/commons/interfaces"
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
-import { Input } from "@/components/Input";
+import { Input } from '@chakra-ui/react'
 import AuthService from "@/services/AuthService";
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import FilledInput from '@mui/material/FilledInput';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-
-export function CadastroUserPage() {
-  const [form, setForm] = useState({
-    nome: "",
-    username: "",
-    senha: "",
-  });
-  const [errors, setErrors] = useState({
-    nome: "",
-    username: "",
-    senha: "",
-  });
-  const [pendingApiCall, setPendingApiCall] = useState(false);
+export function CadastroContaPage(){
+    const [form, setForm] = useState({
+        numero:"",
+        conta:"",
+        agencia:"",
+        tipoConta:"",
+        saldo:0
+      });
+      const [errors, setErrors] = useState({
+        numero:"",
+        conta:"",
+        agencia:"",
+        tipoConta:"",
+        saldo:0
+      });
+const [pendingApiCall, setPendingApiCall] = useState(false);
   const [userSaved, setUserSaved] = useState("");
   const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
@@ -40,18 +55,20 @@ export function CadastroUserPage() {
     });
   };
 
-  const onClickSignup = () => {
+  const onClickCadastrar = () => {
     setPendingApiCall(true);
-    const userSigup: IUsuarioCadastro = {
-      nome: form.nome,
-      username: form.username,
-      senha: form.senha,
+    const contaCadastro: IContaCadastro = {
+        numero:form.numero,
+        conta:form.conta,
+        agencia:form.agencia,
+        tipoConta:form.tipoConta,
+        saldo:form.saldo
     };
-    AuthService.signup(userSigup)
+    AuthService.cadastroConta(contaCadastro)
       .then((response) => {
         setUserSaved(response.data.message);
         setApiError("");
-        navigate("/login");
+        navigate("/cadastroConta");
       })
       .catch((responseError) => {
         if (responseError.response.data.validationErrors) {
@@ -67,28 +84,15 @@ export function CadastroUserPage() {
   };
 
   return (
-    <div id="mainlogin">
+    <div>
       <main className="container">
-        <form id="formLogin">
-          <div className="text-center">
-            <h1 className="h3 mb-3 fw-normal mt-3 mx-5">Cadastre-se </h1>
-          </div>
+        <form id="formCadastros" className="align-items-center">
+          <h2 className="text-center mb-3">Cadastro de Contas</h2>
+          
+          <Input placeholder='Basic usage' id="metade" />
+          <Input placeholder='Basic usage' id="metade" />
 
-          <div className="form-floating mb-3">
-            <Input
-              label="Informe seu nome"
-              name="nome"
-              className="form-control"
-              type="text"
-              placeholder="Informe seu nome"
-              onChange={onChange}
-              value={form.nome}
-              hasError={errors.nome ? true : false}
-              error={errors.nome}
-            />
-          </div>
-
-          <div className="form-floating mb-3">
+          {/*<div className="form-floating mb-3">
             <Input
               label="Informe seu usuário"
               name="username"
@@ -144,7 +148,7 @@ export function CadastroUserPage() {
               <div className="alert alert-danger">{apiError}</div>
             </div>
           )}
-          
+          */}
         
         </form>
         

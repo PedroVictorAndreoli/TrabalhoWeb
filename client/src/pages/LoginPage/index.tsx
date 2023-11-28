@@ -10,11 +10,11 @@ import { Link, useNavigate } from "react-router-dom";
 export function LoginPage() {
   const [form, setForm] = useState({
     username: "",
-    password: "",
+    senha: "",
   });
   const [errors, setErrors] = useState({
     username: "",
-    password: "",
+    senha: "",
   });
   const [pendingApiCall, setPendingApiCall] = useState(false);
   const [userAuthenticated, setUserAuthenticated] = useState("");
@@ -45,7 +45,7 @@ export function LoginPage() {
     setPendingApiCall(true);
     const userLogin: IUsuarioLogin = {
       username: form.username,
-      senha: form.password,
+      senha: form.senha,
     };
     AuthService.login(userLogin)
       .then((response) => {
@@ -73,7 +73,7 @@ export function LoginPage() {
 
       <main  className="container">
 
-        <form >
+        <form id="formLogin">
           <div className="text-center">
             <h1 className="h3 mb-3 fw-normal mt-3">Login</h1>
           </div>
@@ -98,20 +98,20 @@ export function LoginPage() {
 
           <div className="form-floating mb-3">
             <Input
-              name="password"
+              name="senha"
               className={
-                errors.password ? "form-control is-invalid" : "form-control"
+                errors.senha ? "form-control is-invalid" : "form-control"
               }
               error=""
               type="password"
               label=""
-              value={form.password}
+              value={form.senha}
               hasError={true}
               placeholder="Iforme sua senha"
               onChange={onChange}
             />
-            {errors.password && (
-              <div className="invalid-feedback">{errors.password}</div>
+            {errors.senha && (
+              <div className="invalid-feedback">{errors.senha}</div>
             )}
           </div>
 

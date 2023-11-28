@@ -3,6 +3,7 @@ import { LoginPage } from "@/pages/LoginPage";
 import { CadastroUserPage } from "@/pages/CadastroUserPage";
 import { Route, Routes } from "react-router-dom";
 import { AuthenticatedRoutes } from "../AuthenticatedRoutes";
+import {CadastroContaPage} from "@/pages/CadastroContaPage"
 export function BaseRoutes() {
   return (
     <>
@@ -14,7 +15,7 @@ export function BaseRoutes() {
             {/* Protected Routes */}
             <Route element={<AuthenticatedRoutes />}>
                 <Route path="/" element={<Home />} />
-
+                <Route path="/cadastroConta" element={<CadastroContaPage />} />
                {/* <Route path="/categories" element={<CategoryListPage />} />
                 <Route path="/categories/new" element={<CategoryFormPage />} />
                 <Route path="/categories/:id" element={<CategoryFormPage />} />
