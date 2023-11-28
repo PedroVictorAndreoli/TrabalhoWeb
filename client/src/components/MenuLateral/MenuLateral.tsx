@@ -14,13 +14,18 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ShieldRoundedIcon from "@mui/icons-material/ShieldRounded";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import AddCard from "@mui/icons-material/AddCard";
 import "./MenuLateral.css"
 import { Link, Route, Routes } from "react-router-dom";
-import { Home,Dashboard,Transactions } from "@/pages/HomePage";
+import { Home } from "@/pages/HomePage";
 
 
 export function MenuLateral() {
 
+  function logoutUser(): void {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+}
 
     return (
       
@@ -45,11 +50,11 @@ export function MenuLateral() {
             <MenuItem icon={<TimelineRoundedIcon />}> Timeline Chart </MenuItem>
             <MenuItem icon={<BubbleChartRoundedIcon />}>Bubble Chart</MenuItem>
           </SubMenu>
-          <SubMenu label="Wallets" icon={<WalletRoundedIcon />}>
-            <MenuItem icon={<AccountBalanceRoundedIcon />}>
-              Current Wallet
+          <SubMenu label="Carteira" icon={<WalletRoundedIcon />}>
+            <MenuItem icon={<AddCard />}>
+              Cadastro de Conta
             </MenuItem>
-            <MenuItem icon={<SavingsRoundedIcon />}>Savings Wallet</MenuItem>
+            <MenuItem icon={<AccountBalanceRoundedIcon />}>Contas</MenuItem>
           </SubMenu>
           <MenuItem
             component={<Link to="transactions" className="link" />}
@@ -64,14 +69,12 @@ export function MenuLateral() {
               Notifications
             </MenuItem>
           </SubMenu>
-          <MenuItem icon={<LogoutRoundedIcon />}> Logout </MenuItem>
+          <MenuItem icon={<LogoutRoundedIcon /> } component={<Link to="login" className="link" />} onClick={logoutUser}> Logout </MenuItem>
         </Menu>
       </Sidebar>
       <section>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="transactions" element={<Transactions />} />
         </Routes>
       </section>
     </div>

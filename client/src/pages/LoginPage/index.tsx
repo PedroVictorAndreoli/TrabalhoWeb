@@ -69,8 +69,9 @@ export function LoginPage() {
   };
 
   return (
-    <>
-      <main className="container">
+    <div id="mainlogin">
+
+      <main  className="container">
 
         <form >
           <div className="text-center">
@@ -140,6 +141,6 @@ export function LoginPage() {
         </form>
 
       </main>
-    </>
+    </div>
   );
 }

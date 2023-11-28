@@ -67,7 +67,7 @@ export function CadastroUserPage() {
   };
 
   return (
-    <>
+    <div id="mainlogin">
       <main className="container">
         <form>
           <div className="text-center">
@@ -149,6 +149,6 @@ export function CadastroUserPage() {
         </form>
         
       </main>
-    </>
+    </div>
   );
 }

@@ -19,6 +19,7 @@ export function ButtonWithProgress({
         disabled={disabled}
         className={className || "btn btn-primary"}
         onClick={onClick}
+        type="button"
       >
         {pendingApiCall && (
           <div
