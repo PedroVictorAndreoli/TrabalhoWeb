@@ -1,4 +1,4 @@
-import { IUsuarioLogin} from "@/commons/interfaces";
+import { IUsuarioLogin } from "@/commons/interfaces";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { Input } from "@/components/Input";
 import AuthService from "@/services/AuthService";
@@ -20,12 +20,12 @@ export function LoginPage() {
   const [userAuthenticated, setUserAuthenticated] = useState("");
   const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
-  
 
-  
+
+
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    
+
     setForm((previousState) => {
       return {
         ...previousState,
@@ -71,7 +71,7 @@ export function LoginPage() {
   return (
     <div id="mainlogin">
 
-      <main  className="container">
+      <main className="container">
 
         <form id="formLogin">
           <div className="text-center">
@@ -129,14 +129,14 @@ export function LoginPage() {
             </div>
           )}
           {apiError && (
-             <div className="col-12 mb-3">
-               <div className="alert alert-danger">{apiError}
-               </div>
-             </div>
+            <div className="col-12 mb-3">
+              <div className="alert alert-danger">{apiError}
+              </div>
+            </div>
           )}
           <div className="text-center mb-3 mx-3">
-            <span>Não possui cadastro</span>
-            <Link to="/cadastro"> Cadastre-se aqui</Link>
+            <span>Não possui cadastro?Cadastre-se </span>
+            <Link to="/cadastro"> aqui</Link>
           </div>
         </form>
 
