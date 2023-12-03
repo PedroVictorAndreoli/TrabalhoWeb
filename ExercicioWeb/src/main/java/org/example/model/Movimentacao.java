@@ -26,7 +26,7 @@ public class Movimentacao {
     @NotNull
     private double valor;
     @NotNull
-    private LocalDate data;
+    private LocalDate dataMovimentacao;
     @NotNull
     private String categoria;
     private String descricao;

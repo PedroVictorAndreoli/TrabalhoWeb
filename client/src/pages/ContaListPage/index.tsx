@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ContaService from "@/services/ContraService";
+import ContaService from "@/services/ContaService";
 import { IContaCadastro } from "@/commons/interfaces";
 import { Link } from "react-router-dom";
 

@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import { FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
-import ContaService from "@/services/ContraService";
+import ContaService from "@/services/ContaService";
 import { useEffect } from "react";
 
 

@@ -18,7 +18,7 @@ const findById = (id: number) => {
     return api.get(`/contas/${id}`);
 }
 
-const remove = (id: number) => { 
+const remove = (id: number) => {
     return api.delete(`/contas/${id}`);
 }
 
