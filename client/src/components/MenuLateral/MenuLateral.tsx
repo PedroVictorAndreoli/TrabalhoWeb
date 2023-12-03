@@ -17,6 +17,7 @@ import AddCard from "@mui/icons-material/AddCard";
 import "./MenuLateral.css"
 import { Link, Route, Routes } from "react-router-dom";
 import { Home } from "@/pages/HomePage";
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
 
 export function MenuLateral() {
@@ -53,14 +54,16 @@ export function MenuLateral() {
             <MenuItem icon={<AddCard />} component={<Link to="cadastroConta" className="link" />}>
               Cadastro de Conta
             </MenuItem>
-            <MenuItem icon={<AccountBalanceRoundedIcon />}>Contas</MenuItem>
+            <MenuItem icon={<AccountBalanceRoundedIcon />} component={<Link to="contas" className="link" />}>Contas</MenuItem>
           </SubMenu>
-          <MenuItem
-            component={<Link to="transactions" className="link" />}
-            icon={<MonetizationOnRoundedIcon />}
-          >
-            Transactions
-          </MenuItem>
+          <SubMenu label="Movimentações" icon={<MonetizationOnRoundedIcon />}>
+            <MenuItem
+              icon={<CurrencyExchangeIcon />}
+              component={<Link to="cadastroMovimentacao" className="link" />}
+            >
+              Cadastro de Movimentação
+            </MenuItem>
+          </SubMenu>
           <SubMenu label="Settings" icon={<SettingsApplicationsRoundedIcon />}>
             <MenuItem icon={<AccountCircleRoundedIcon />}> Account </MenuItem>
             <MenuItem icon={<ShieldRoundedIcon />}> Privacy </MenuItem>
@@ -76,7 +79,7 @@ export function MenuLateral() {
           <Route path="/" element={<Home />} />
         </Routes>
       </section>
-    </div>
+    </div >
 
   );
 }

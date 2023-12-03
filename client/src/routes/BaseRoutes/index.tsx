@@ -3,20 +3,22 @@ import { LoginPage } from "@/pages/LoginPage";
 import { CadastroUserPage } from "@/pages/CadastroUserPage";
 import { Route, Routes } from "react-router-dom";
 import { AuthenticatedRoutes } from "../AuthenticatedRoutes";
-import {CadastroContaPage} from "@/pages/CadastroContaPage"
+import { CadastroContaPage } from "@/pages/CadastroContaPage"
+import { ContaListPage } from "@/pages/ContaListPage";
 export function BaseRoutes() {
   return (
     <>
-        <Routes>
-            {/* Public Routes */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/cadastro" element={<CadastroUserPage />} />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/cadastro" element={<CadastroUserPage />} />
 
-            {/* Protected Routes */}
-            <Route element={<AuthenticatedRoutes />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/cadastroConta" element={<CadastroContaPage />} />
-               {/* <Route path="/categories" element={<CategoryListPage />} />
+        {/* Protected Routes */}
+        <Route element={<AuthenticatedRoutes />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/cadastroConta" element={<CadastroContaPage />} />
+          <Route path="/contas" element={<ContaListPage />} />
+          {/* <Route path="/categories" element={<CategoryListPage />} />
                 <Route path="/categories/new" element={<CategoryFormPage />} />
                 <Route path="/categories/:id" element={<CategoryFormPage />} />
 
@@ -28,8 +30,8 @@ export function BaseRoutes() {
 
                 <Route path="/products-v2/new" element={<ProductFormPageV2 />} />
                 <Route path="/products-v2/:id" element={<ProductFormPageV2 />} />*/}
-            </Route>
-        </Routes>
+        </Route>
+      </Routes>
     </>
   )
 }

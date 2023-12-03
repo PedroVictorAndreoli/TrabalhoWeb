@@ -1,101 +1,113 @@
 import { IContaCadastro } from "@/commons/interfaces"
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { Input } from '@/components/Input'
-import AuthService from "@/services/AuthService";
+
 import { ChangeEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { useNavigate, useParams } from "react-router-dom";
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
-import theme from "@/theme";
-import { FormControl, InputLabel, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
+import ContaService from "@/services/ContraService";
+import { useEffect } from "react";
 
 
 export function CadastroContaPage() {
   const [form, setForm] = useState({
+    id: undefined,
     numero: "",
-    conta: "",
+    banco: "",
     agencia: "",
     tipoConta: "",
     saldo: 0
   });
   const [errors, setErrors] = useState({
+    id: undefined,
     numero: "",
-    conta: "",
+    banco: "",
     agencia: "",
     tipoConta: "",
     saldo: 0
   });
   const [pendingApiCall, setPendingApiCall] = useState(false);
-  const [userSaved, setUserSaved] = useState("");
-  const [apiError, setApiError] = useState("");
+  const [apiError, setApiError] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
+  useEffect(() => {
+    if (id) {
+      ContaService.findById(parseInt(id))
+        .then((response) => {
+          if (response.data) {
+            setForm({
+              id: response.data.id,
+              numero: response.data.numero,
+              banco: response.data.banco,
+              agencia: response.data.agencia,
+              tipoConta: response.data.tipoConta,
+              saldo: response.data.saldo
+            });
 
+
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+  }, []);
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-
-    setForm((previousState) => {
+    const { value, name } = event.target;
+    setForm((previousForm) => {
       return {
-        ...previousState,
+        ...previousForm,
         [name]: value,
       };
     });
-
-    setErrors((previousState) => {
+    setErrors((previousErrors) => {
       return {
-        ...previousState,
-        [name]: undefined,
+        ...previousErrors,
+        [name]: "",
       };
     });
   };
-
-  const handleChange = (event: SelectChangeEvent<typeof form.tipoConta>) => {
-    const { name, value } = event.target;
-    setForm((previousState) => {
-      return {
-        ...previousState,
-        [name]: value,
-      };
-    });
-
-    setErrors((previousState) => {
-      return {
-        ...previousState,
-        [name]: undefined,
-      };
-    });
-  };
-
-  const onClickCadastrar = () => {
-    setPendingApiCall(true);
-    const contaCadastro: IContaCadastro = {
+  const onSubmit = () => {
+    console.log({ apiError })
+    const category: IContaCadastro = {
+      id: form.id,
       numero: form.numero,
-      conta: form.conta,
+      banco: form.banco,
       agencia: form.agencia,
       tipoConta: form.tipoConta,
       saldo: form.saldo
     };
-    AuthService.cadastroConta(contaCadastro)
+    setPendingApiCall(true);
+    ContaService.save(category)
       .then((response) => {
-        setUserSaved(response.data.message);
-        setApiError("");
-        navigate("/cadastroConta");
+        console.log(response);
+        setPendingApiCall(false);
+        navigate("/contas");
       })
       .catch((responseError) => {
         if (responseError.response.data.validationErrors) {
           setErrors(responseError.response.data.validationErrors);
-
-          setApiError(responseError.response.data.message);
-          setUserSaved("");
         }
-      })
-      .finally(() => {
         setPendingApiCall(false);
+        setApiError(true);
       });
   };
+  const handleChange = (event: SelectChangeEvent<typeof form.tipoConta>) => {
+    const { name, value } = event.target;
+    setForm((previousState) => ({
+      ...previousState,
+      [name]: value,
+    }));
+
+    setErrors((previousState) => ({
+      ...previousState,
+      [name]: undefined,
+    }));
+  };
+
   const currencies = [
     {
       value: 'ContaCorrente',
@@ -122,17 +134,17 @@ export function CadastroContaPage() {
               <Grid xs={4}>
                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                   <Input
-                    label="Informe sua conta"
-                    name="conta"
+                    label="Informe sua banco"
+                    name="banco"
                     className="form-control w-100"
                     type="text"
                     placeholder="Informe sua conta"
-                    value={form.conta}
+                    value={form.banco}
                     onChange={onChange}
                     hasError={false}
                     error="" />
-                  {errors.conta && (
-                    <div className="invalid-feedback">{errors.conta}</div>
+                  {errors.banco && (
+                    <div className="invalid-feedback">{errors.banco}</div>
                   )}
                 </FormControl>
               </Grid>
@@ -148,8 +160,8 @@ export function CadastroContaPage() {
                     onChange={onChange}
                     hasError={false}
                     error="" />
-                  {errors.conta && (
-                    <div className="invalid-feedback">{errors.conta}</div>
+                  {errors.numero && (
+                    <div className="invalid-feedback">{errors.numero}</div>
                   )}
                 </FormControl>
               </Grid>
@@ -165,7 +177,7 @@ export function CadastroContaPage() {
                     onChange={onChange}
                     hasError={false}
                     error="" />
-                  {errors.conta && (
+                  {errors.agencia && (
                     <div className="invalid-feedback">{errors.agencia}</div>
                   )}
                 </FormControl>
@@ -175,9 +187,8 @@ export function CadastroContaPage() {
                   <InputLabel id="demo-controlled-open-select-label">Tipo de Conta</InputLabel>
                   <Select
                     id="outlined-select-currency"
-                    name="Tipo de Conta"
+                    name="tipoConta"
                     label="Tipo de Conta"
-                    defaultValue="ContaCorrente"
                     onChange={handleChange}
                   >
                     {currencies.map((option) => (
@@ -200,89 +211,28 @@ export function CadastroContaPage() {
                     onChange={onChange}
                     hasError={false}
                     error="" />
-                  {errors.conta && (
-                    <div className="invalid-feedback">{errors.conta}</div>
-                  )}
                 </FormControl>
               </Grid>
               <Grid xs={12}>
                 <ButtonWithProgress
                   disabled={pendingApiCall}
                   className="w-100 btn btn-lg btn-warning mb-3 mt-3"
-                  onClick={onClickCadastrar}
+                  onClick={onSubmit}
+                  //disabled={pendingApiCall ? true : false}
                   pendingApiCall={pendingApiCall}
                   text="Cadastrar"
                 />
               </Grid>
-              {userSaved && (
-                <div className="col-12 mb-3">
-                  <div className="alert alert-success">{userSaved}</div>
-                </div>
-              )}
+
               {apiError && (
-                <div className="col-12 mb-3">
-                  <div className="alert alert-danger">{apiError}</div>
+
+                <div className="alert alert-danger">
+                  Falha ao cadastrar a categoria.
                 </div>
               )}
             </Grid>
           </Box>
-          {/*<div className="form-floating mb-3">
-            <Input
-              label="Informe seu usuário"
-              name="username"
-              className="form-control"
-              type="text"
-              placeholder="Informe seu usuário"
-              value={form.username}
-              onChange={onChange}
-              hasError={false}
-              error=""/>
-            {errors.username && (
-              <div className="invalid-feedback">{errors.username}</div>
-            )}
-          </div>
 
-          <div className="form-floating mb-3">
-            <Input
-              name="senha"
-              className={
-                errors.senha ? "form-control is-invalid" : "form-control"
-              }
-              error=""
-              type="password"
-              label=""
-              value={form.senha}
-              hasError={true}
-              placeholder="Informe sua senha"
-              onChange={onChange}
-            />
-            {errors.senha && (
-              <div className="invalid-feedback">{errors.senha}</div>
-            )}
-          </div>
-          <div className="text-center mx-3">
-          <span>Já possui cadastro? </span>
-          <Link to="/login">Autenticar-se</Link>
-          </div>
-          <ButtonWithProgress
-            disabled={pendingApiCall}
-            className="w-50 btn btn-lg btn-warning mb-3 mt-3"
-            onClick={onClickSignup}
-            pendingApiCall={pendingApiCall}
-            text="Cadastrar"
-          />
-
-          {userSaved && (
-            <div className="col-12 mb-3">
-              <div className="alert alert-success">{userSaved}</div>
-            </div>
-          )}
-          {apiError && (
-            <div className="col-12 mb-3">
-              <div className="alert alert-danger">{apiError}</div>
-            </div>
-          )}
-          */}
 
         </form>
 
