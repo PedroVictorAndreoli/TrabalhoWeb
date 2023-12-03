@@ -8,17 +8,17 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import { FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
-import ContaService from "@/services/ContaService";
 import { useEffect } from "react";
-import { isDate } from "util/types";
+import MovimentacaoService from "@/services/MovimentacaoService";
+import ContaService from "@/services/ContaService";
 
 
-export function CadastroContaPage() {
+export function CadastroMovimentacaoPage() {
     const [form, setForm] = useState({
         id: undefined,
         conta: undefined,
         valor: 0,
-        dataMovimentacao: isDate,
+        dataMovimentacao: "",
         categoria: "",
         descricao: "",
         situacaoMovimentacao: "",
@@ -34,7 +34,20 @@ export function CadastroContaPage() {
         situacaoMovimentacao: "",
         tipoMovimentacao: ""
     });
+
+    const carregaConta = () => {
+        ContaService.findAll()
+            .then((response) => {
+                setData(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+
     const [pendingApiCall, setPendingApiCall] = useState(false);
+    const [data, setData] = useState([]);
     const [apiError, setApiError] = useState(false);
     const navigate = useNavigate();
     const { id } = useParams();
@@ -84,22 +97,17 @@ export function CadastroContaPage() {
             conta: form.conta,
             valor: form.valor,
             dataMovimentacao: form.dataMovimentacao,
-            categoria: "",
-            descricao: "",
-            situacaoMovimentacao: "",
-            tipoMovimentacao: ""
-            numero: form.numero,
-            banco: form.banco,
-            agencia: form.agencia,
-            tipoConta: form.tipoConta,
-            saldo: form.saldo
+            categoria: form.categoria,
+            descricao: form.descricao,
+            situacaoMovimentacao: form.situacaoMovimentacao,
+            tipoMovimentacao: form.tipoMovimentacao
         };
         setPendingApiCall(true);
-        ContaService.save(category)
+        MovimentacaoService.save(category)
             .then((response) => {
                 console.log(response);
                 setPendingApiCall(false);
-                navigate("/contas");
+                navigate("/movimentacoes");
             })
             .catch((responseError) => {
                 if (responseError.response.data.validationErrors) {
@@ -109,7 +117,7 @@ export function CadastroContaPage() {
                 setApiError(true);
             });
     };
-    const handleChange = (event: SelectChangeEvent<typeof form.tipoConta>) => {
+    const handleChange = (event: SelectChangeEvent<typeof form.conta>) => {
         const { name, value } = event.target;
         setForm((previousState) => ({
             ...previousState,
@@ -122,7 +130,7 @@ export function CadastroContaPage() {
         }));
     };
 
-    const currencies = [
+    /*const currencies = [
         {
             value: 'ContaCorrente',
             label: 'Conta Corrente',
@@ -135,7 +143,7 @@ export function CadastroContaPage() {
             value: 'ContaInvestimento',
             label: 'Conta Investimento',
         },
-    ];
+    ];*/
 
 
     return (
@@ -145,7 +153,7 @@ export function CadastroContaPage() {
                     <h2 className="text-center">Cadastro de Contas</h2>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={2}>
-                            <Grid xs={4}>
+                            {/* <Grid xs={4}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                     <Input
                                         label="Informe sua banco"
@@ -195,13 +203,13 @@ export function CadastroContaPage() {
                                         <div className="invalid-feedback">{errors.agencia}</div>
                                     )}
                                 </FormControl>
-                            </Grid>
+                                    </Grid>*/}
                             <Grid xs={12}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                     <InputLabel id="demo-controlled-open-select-label">Tipo de Conta</InputLabel>
                                     <Select
                                         id="outlined-select-currency"
-                                        name="tipoConta"
+                                        name="tipoMovimentacao"
                                         label="Tipo de Conta"
                                         onChange={handleChange}
                                     >
@@ -213,7 +221,7 @@ export function CadastroContaPage() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid xs={6}>
+                            {/*<Grid xs={6}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                     <Input
                                         label="Informe seu banco"
@@ -226,7 +234,7 @@ export function CadastroContaPage() {
                                         hasError={false}
                                         error="" />
                                 </FormControl>
-                            </Grid>
+                                        </Grid>*/}
                             <Grid xs={12}>
                                 <ButtonWithProgress
                                     disabled={pendingApiCall}

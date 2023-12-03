@@ -23,7 +23,7 @@ export interface IMovimentacaoCadastro {
     id?: number;
     conta: undefined;
     valor: number;
-    dataMovimentacao: Date;
+    dataMovimentacao: string;
     categoria: string;
     descricao: string;
     situacaoMovimentacao: string;

@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import { AuthenticatedRoutes } from "../AuthenticatedRoutes";
 import { CadastroContaPage } from "@/pages/CadastroContaPage"
 import { ContaListPage } from "@/pages/ContaListPage";
+import { CadastroMovimentacaoPage } from "@/pages/CadastroMovimentacaoPage";
 export function BaseRoutes() {
   return (
     <>
@@ -18,6 +19,7 @@ export function BaseRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/cadastroConta" element={<CadastroContaPage />} />
           <Route path="/contas" element={<ContaListPage />} />
+          <Route path="/cadastroMovimentacao" element={<CadastroMovimentacaoPage />} />
           {/* <Route path="/categories" element={<CategoryListPage />} />
                 <Route path="/categories/new" element={<CategoryFormPage />} />
                 <Route path="/categories/:id" element={<CategoryFormPage />} />
