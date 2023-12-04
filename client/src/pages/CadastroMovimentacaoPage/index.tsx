@@ -1,4 +1,4 @@
-import { IMovimentacaoCadastro } from "@/commons/interfaces";
+import { IContaCadastro, IMovimentacaoCadastro } from "@/commons/interfaces";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { Input } from '@/components/Input'
 
@@ -16,7 +16,7 @@ import ContaService from "@/services/ContaService";
 export function CadastroMovimentacaoPage() {
     const [form, setForm] = useState({
         id: undefined,
-        conta: undefined,
+        conta: { id: undefined, numero: "", banco: "", saldo: 0, agencia: "", tipoConta: "" },
         valor: 0,
         dataMovimentacao: "",
         categoria: "",
@@ -26,7 +26,7 @@ export function CadastroMovimentacaoPage() {
     });
     const [errors, setErrors] = useState({
         id: undefined,
-        conta: undefined,
+        conta: { id: undefined, numero: "", banco: "", valor: 0 },
         valor: 0,
         dataMovimentacao: undefined,
         categoria: "",
@@ -35,125 +35,120 @@ export function CadastroMovimentacaoPage() {
         tipoMovimentacao: ""
     });
 
-    const carregaConta = () => {
-        ContaService.findAll()
-            .then((response) => {
-                setData(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
 
 
-    const [pendingApiCall, setPendingApiCall] = useState(false);
-    const [data, setData] = useState([]);
-    const [apiError, setApiError] = useState(false);
-    const navigate = useNavigate();
-    const { id } = useParams();
+
     useEffect(() => {
-        if (id) {
-            ContaService.findById(parseInt(id))
-                .then((response) => {
-                    if (response.data) {
-                        setForm({
-                            id: response.data.id,
-                            conta: response.data.conta,
-                            valor: response.data.valor,
-                            dataMovimentacao: response.data.dataMovimentacao,
-                            categoria: response.data.categoria,
-                            descricao: response.data.descricao,
-                            situacaoMovimentacao: response.data.situacaoMovimentacao,
-                            tipoMovimentacao: response.data.tipoMovimentacao
-                        });
-
-
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
+        loadData();
     }, []);
-    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { value, name } = event.target;
-        setForm((previousForm) => {
-            return {
-                ...previousForm,
-                [name]: value,
-            };
-        });
-        setErrors((previousErrors) => {
-            return {
-                ...previousErrors,
-                [name]: "",
-            };
-        });
-    };
-    const onSubmit = () => {
-        console.log({ apiError })
-        const category: IMovimentacaoCadastro = {
-            id: form.id,
-            conta: form.conta,
-            valor: form.valor,
-            dataMovimentacao: form.dataMovimentacao,
-            categoria: form.categoria,
-            descricao: form.descricao,
-            situacaoMovimentacao: form.situacaoMovimentacao,
-            tipoMovimentacao: form.tipoMovimentacao
-        };
-        setPendingApiCall(true);
-        MovimentacaoService.save(category)
+
+    const loadData = async () => {
+        // Busca a lista de categorias
+        await ContaService.findAll()
             .then((response) => {
-                console.log(response);
-                setPendingApiCall(false);
-                navigate("/movimentacoes");
+                // caso sucesso, adiciona a lista no state
+                setContas(response.data);
+                setApiError2("");
             })
-            .catch((responseError) => {
-                if (responseError.response.data.validationErrors) {
-                    setErrors(responseError.response.data.validationErrors);
-                }
-                setPendingApiCall(false);
-                setApiError(true);
+            .catch(() => {
+                setApiError2("Falha ao carregar a combo de categorias.");
             });
-    };
-    const handleChange = (event: SelectChangeEvent<typeof form.conta>) => {
-        const { name, value } = event.target;
-        setForm((previousState) => ({
-            ...previousState,
-            [name]: value,
-        }));
 
-        setErrors((previousState) => ({
-            ...previousState,
-            [name]: undefined,
-        }));
-    };
-
-    /*const currencies = [
-        {
-            value: 'ContaCorrente',
-            label: 'Conta Corrente',
-        },
-        {
-            value: 'ContaPoupanca',
-            label: 'Conta Poupança',
-        },
-        {
-            value: 'ContaInvestimento',
-            label: 'Conta Investimento',
-        },
-    ];*/
+        const [pendingApiCall, setPendingApiCall] = useState(false);
+        const [data, setData] = useState([]);
+        const [apiError, setApiError] = useState(false);
+        const [apiError2, setApiError2] = useState("");
+        const navigate = useNavigate();
+        const [contas, setContas] = useState<IContaCadastro[]>([]);
+        const { id } = useParams();
+        useEffect(() => {
+            if (id) {
+                ContaService.findById(parseInt(id))
+                    .then((response) => {
+                        if (response.data) {
+                            setForm({
+                                id: response.data.id,
+                                conta: { id: response.data.conta.id, numero: "", banco: "", saldo: 0, agencia: "", tipoConta: "" },
+                                valor: response.data.valor,
+                                dataMovimentacao: response.data.dataMovimentacao,
+                                categoria: response.data.categoria,
+                                descricao: response.data.descricao,
+                                situacaoMovimentacao: response.data.situacaoMovimentacao,
+                                tipoMovimentacao: response.data.tipoMovimentacao
+                            });
 
 
-    return (
-        <div>
-            <main className="container">
-                <form id="formCadastros" className="mt-2">
-                    <h2 className="text-center">Cadastro de Contas</h2>
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Grid container spacing={2}>
-                            {/* <Grid xs={4}>
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            }
+        }, []);
+        const onSubmit = () => {
+            console.log({ apiError })
+            const category: IMovimentacaoCadastro = {
+                id: form.id,
+                conta: form.conta,
+                valor: form.valor,
+                dataMovimentacao: form.dataMovimentacao,
+                categoria: form.categoria,
+                descricao: form.descricao,
+                situacaoMovimentacao: form.situacaoMovimentacao,
+                tipoMovimentacao: form.tipoMovimentacao
+            };
+            setPendingApiCall(true);
+            MovimentacaoService.save(category)
+                .then((response) => {
+                    console.log(response);
+                    setPendingApiCall(false);
+                    navigate("/movimentacoes");
+                })
+                .catch((responseError) => {
+                    if (responseError.response.data.validationErrors) {
+                        setErrors(responseError.response.data.validationErrors);
+                    }
+                    setPendingApiCall(false);
+                    setApiError(true);
+                });
+        };
+        const handleChange = (event: SelectChangeEvent<typeof form.conta>) => {
+            const { name, value } = event.target;
+            setForm((previousState) => ({
+                ...previousState,
+                [name]: value,
+            }));
+
+            setErrors((previousState) => ({
+                ...previousState,
+                [name]: undefined,
+            }));
+        };
+
+        /*const currencies = [
+            {
+                value: 'ContaCorrente',
+                label: 'Conta Corrente',
+            },
+            {
+                value: 'ContaPoupanca',
+                label: 'Conta Poupança',
+            },
+            {
+                value: 'ContaInvestimento',
+                label: 'Conta Investimento',
+            },
+        ];*/
+
+
+        return (
+            <div>
+                <main className="container">
+                    <form id="formCadastros" className="mt-2">
+                        <h2 className="text-center">Cadastro de Contas</h2>
+                        <Box sx={{ flexGrow: 1 }}>
+                            <Grid container spacing={2}>
+                                {/* <Grid xs={4}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                     <Input
                                         label="Informe sua banco"
@@ -204,24 +199,25 @@ export function CadastroMovimentacaoPage() {
                                     )}
                                 </FormControl>
                                     </Grid>*/}
-                            <Grid xs={12}>
-                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                                    <InputLabel id="demo-controlled-open-select-label">Tipo de Conta</InputLabel>
-                                    <Select
-                                        id="outlined-select-currency"
-                                        name="tipoMovimentacao"
-                                        label="Tipo de Conta"
-                                        onChange={handleChange}
-                                    >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            {/*<Grid xs={6}>
+                                <Grid xs={12}>
+                                    <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                        <InputLabel id="demo-controlled-open-select-label">Tipo de Conta</InputLabel>
+                                        <Select
+                                            id="outlined-select-currency"
+                                            name="tipoMovimentacao"
+                                            label="Tipo de Conta"
+                                            value={form.conta.id}
+                                            onChange={handleChange}
+                                        >
+                                            {contas.map((option: IContaCadastro) => (
+                                                <MenuItem key={option.id} value={option.id}>
+                                                    Numero: {option.numero} Banco: {option.banco}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                {/*<Grid xs={6}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                     <Input
                                         label="Informe seu banco"
@@ -235,30 +231,31 @@ export function CadastroMovimentacaoPage() {
                                         error="" />
                                 </FormControl>
                                         </Grid>*/}
-                            <Grid xs={12}>
-                                <ButtonWithProgress
-                                    disabled={pendingApiCall}
-                                    className="w-100 btn btn-lg btn-warning mb-3 mt-3"
-                                    onClick={onSubmit}
-                                    //disabled={pendingApiCall ? true : false}
-                                    pendingApiCall={pendingApiCall}
-                                    text="Cadastrar"
-                                />
+                                <Grid xs={12}>
+                                    <ButtonWithProgress
+                                        disabled={pendingApiCall}
+                                        className="w-100 btn btn-lg btn-warning mb-3 mt-3"
+                                        onClick={onSubmit}
+                                        //disabled={pendingApiCall ? true : false}
+                                        pendingApiCall={pendingApiCall}
+                                        text="Cadastrar"
+                                    />
+                                </Grid>
+
+                                {apiError && (
+
+                                    <div className="alert alert-danger">
+                                        Falha ao cadastrar a categoria.
+                                    </div>
+                                )}
                             </Grid>
-
-                            {apiError && (
-
-                                <div className="alert alert-danger">
-                                    Falha ao cadastrar a categoria.
-                                </div>
-                            )}
-                        </Grid>
-                    </Box>
+                        </Box>
 
 
-                </form>
+                    </form>
 
-            </main>
-        </div>
-    );
+                </main>
+            </div>
+        );
+    }
 }

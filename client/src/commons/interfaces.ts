@@ -21,7 +21,7 @@ export interface IUsuarioCadastro {
 
 export interface IMovimentacaoCadastro {
     id?: number;
-    conta: undefined;
+    conta: IContaCadastro;
     valor: number;
     dataMovimentacao: string;
     categoria: string;
