@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 Test set: org.example.ContaControllerTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 4.769 s <<< FAILURE! - in org.example.ContaControllerTest
-org.example.ContaControllerTest.post_quandoEValido_retorneOk  Time elapsed: 0.543 s  <<< ERROR!
-org.springframework.web.client.ResourceAccessException: I/O error on POST request for "http://localhost:50950/contas": cannot retry due to server authentication, in streaming mode
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 4.593 s <<< FAILURE! - in org.example.ContaControllerTest
+org.example.ContaControllerTest.post_quandoEValido_retorneOk  Time elapsed: 0.464 s  <<< ERROR!
+org.springframework.web.client.ResourceAccessException: I/O error on POST request for "http://localhost:51810/contas": cannot retry due to server authentication, in streaming mode
 	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:888)
 	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:868)
 	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:764)

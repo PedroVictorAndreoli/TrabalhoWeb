@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
+
 @RestController
 @RequestMapping("encode")
 public class EncodeController {
@@ -20,9 +23,11 @@ public class EncodeController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getPublicKey() throws NoSuchAlgorithmException {
+    public ResponseEntity<BigInteger> getPublicKey() throws NoSuchAlgorithmException {
+        System.out.println(rsaGenerete.getPublicKey().toString());
+        RSAPublicKey rsaPub  = (RSAPublicKey)(rsaGenerete.getPublicKey());
         return ResponseEntity.status(HttpStatus.OK)
-                .body(rsaGenerete.getPublicKey().toString());
+                .body(rsaPub.getModulus());
 
     }
 }
