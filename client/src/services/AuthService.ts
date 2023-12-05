@@ -1,5 +1,9 @@
-import {IUsuarioCadastro, IUsuarioLogin,IContaCadastro} from "@/commons/interfaces";
+import { IUsuarioCadastro, IUsuarioLogin, IContaCadastro, IMovimentacaoCadastro } from "@/commons/interfaces";
 import { api } from "@/lib/axios";
+
+const publicKey = () => {
+    return api.get('/encode');
+}
 
 const login = (user: IUsuarioLogin) => {
     return api.post('/login', user);
@@ -13,15 +17,19 @@ const isAuthenticated = () => {
     return token ? true : false;
 }
 
-const logout = () => { 
+const logout = () => {
     localStorage.removeItem('token');
 }
 
-const signup = (user: IUsuarioCadastro) => { 
+const signup = (user: IUsuarioCadastro) => {
     return api.post('/usuarios', user);
 }
-const cadastroConta = (conta: IContaCadastro) =>{
-    return api.post('/contas',conta)
+
+const cadastroConta = (conta: IContaCadastro) => {
+    return api.post('/contas', conta)
+}
+const cadastroMovimentacao = (conta: IMovimentacaoCadastro) => {
+    return api.post('/movimentacoes', conta)
 }
 
 const AuthService = {
@@ -29,7 +37,9 @@ const AuthService = {
     isAuthenticated,
     logout,
     cadastroConta,
-    signup
+    cadastroMovimentacao,
+    signup,
+    publicKey
 }
 
 export default AuthService;

@@ -4,7 +4,7 @@ import { Input } from "@/components/Input";
 import AuthService from "@/services/AuthService";
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import * as crypto from 'crypto';
 
 
 export function LoginPage() {
@@ -47,6 +47,8 @@ export function LoginPage() {
       username: form.username,
       senha: form.senha,
     };
+
+    console.log(AuthService.publicKey())
     AuthService.login(userLogin)
       .then((response) => {
         setUserAuthenticated(response.data.token);

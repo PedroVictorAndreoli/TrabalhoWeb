@@ -1,5 +1,7 @@
 package org.example.security;
 
+import org.springframework.stereotype.Service;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -7,7 +9,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.Base64;
-
+@Service
 public class RSAGenerete {
     private KeyPairGenerator generator;
     private KeyPair pair;
