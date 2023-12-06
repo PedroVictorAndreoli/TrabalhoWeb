@@ -3,12 +3,9 @@ package org.example.controller;
 import org.example.Service.AuthService;
 import org.example.dto.UsuarioDTO;
 import org.example.model.Usuario;
-import org.example.security.RSAGenerete;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
-import java.security.PublicKey;
 
 public class LoginController {
 
