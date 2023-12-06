@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import { AuthenticatedRoutes } from "../AuthenticatedRoutes";
 import { CadastroContaPage } from "@/pages/CadastroContaPage"
 import { ContaListPage } from "@/pages/ContaListPage";
+import { MovimentacaoListPage } from "@/pages/MovimentacaoListPage";
 import { CadastroMovimentacaoPage } from "@/pages/CadastroMovimentacaoPage";
 export function BaseRoutes() {
   return (
@@ -17,9 +18,14 @@ export function BaseRoutes() {
         {/* Protected Routes */}
         <Route element={<AuthenticatedRoutes />}>
           <Route path="/" element={<Home />} />
-          <Route path="/cadastroConta" element={<CadastroContaPage />} />
+          <Route path="/cadastroConta/" element={<CadastroContaPage />} />
+          <Route path="/cadastroConta/new" element={<CadastroContaPage />} />
+          <Route path="/cadastroConta/:id" element={<CadastroContaPage />} />
           <Route path="/contas" element={<ContaListPage />} />
           <Route path="/cadastroMovimentacao" element={<CadastroMovimentacaoPage />} />
+          <Route path="/cadastroMovimentacao/new" element={<CadastroMovimentacaoPage />} />
+          <Route path="/cadastroMovimentacao/:id" element={<CadastroMovimentacaoPage />} />
+          <Route path="/movimentacoes" element={<MovimentacaoListPage />} />
           {/* <Route path="/categories" element={<CategoryListPage />} />
                 <Route path="/categories/new" element={<CategoryFormPage />} />
                 <Route path="/categories/:id" element={<CategoryFormPage />} />

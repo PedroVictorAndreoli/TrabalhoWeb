@@ -28,6 +28,5 @@ public class EncodeController {
         RSAPublicKey rsaPub  = (RSAPublicKey)(rsaGenerete.getPublicKey());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(rsaPub.getModulus());
-
     }
 }

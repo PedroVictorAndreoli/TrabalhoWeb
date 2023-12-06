@@ -61,4 +61,10 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
         //return contaRepository.findAll().stream().filter(conta -> conta.getUsuario() == user).collect(Collectors.toList());
         return movimentacaos;
     }
+
+    @Override
+    public void delete(Long id) {
+        contaRepository.findContaById(id);
+        contaRepository.deleteById(id);
+    }
 }

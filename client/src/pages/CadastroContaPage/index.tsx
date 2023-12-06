@@ -47,7 +47,7 @@ export function CadastroContaPage() {
               saldo: response.data.saldo
             });
 
-
+            console.log(response.data.id)
           }
         })
         .catch((error) => {
@@ -202,11 +202,11 @@ export function CadastroContaPage() {
               <Grid xs={6}>
                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                   <Input
-                    label="Informe seu banco"
+                    label="Informe seu saldo"
                     name="saldo"
                     className="form-control w-100"
                     type="number"
-                    placeholder="Informe seu banco"
+                    placeholder="Informe seu saldo"
                     value={form.saldo.toString()}
                     onChange={onChange}
                     hasError={false}

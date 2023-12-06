@@ -18,13 +18,14 @@ import "./MenuLateral.css"
 import { Link, Route, Routes } from "react-router-dom";
 import { Home } from "@/pages/HomePage";
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import PriceChangeIcon from '@mui/icons-material/PriceChange';
+import AuthService from "@/services/AuthService";
 
 
 export function MenuLateral() {
 
   function logoutUser(): void {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    AuthService.logout()
   }
 
   return (
@@ -45,11 +46,6 @@ export function MenuLateral() {
           >
             Dashboard
           </MenuItem>
-          <MenuItem icon={<ReceiptRoundedIcon />}> Invoices </MenuItem>
-          <SubMenu label="Charts" icon={<BarChartRoundedIcon />}>
-            <MenuItem icon={<TimelineRoundedIcon />}> Timeline Chart </MenuItem>
-            <MenuItem icon={<BubbleChartRoundedIcon />}>Bubble Chart</MenuItem>
-          </SubMenu>
           <SubMenu label="Carteira" icon={<WalletRoundedIcon />}>
             <MenuItem icon={<AddCard />} component={<Link to="cadastroConta" className="link" />}>
               Cadastro de Conta
@@ -63,12 +59,11 @@ export function MenuLateral() {
             >
               Cadastro de Movimentação
             </MenuItem>
-          </SubMenu>
-          <SubMenu label="Settings" icon={<SettingsApplicationsRoundedIcon />}>
-            <MenuItem icon={<AccountCircleRoundedIcon />}> Account </MenuItem>
-            <MenuItem icon={<ShieldRoundedIcon />}> Privacy </MenuItem>
-            <MenuItem icon={<NotificationsRoundedIcon />}>
-              Notifications
+            <MenuItem
+              icon={<PriceChangeIcon />}
+              component={<Link to="movimentacoes" className="link" />}
+            >
+              Lista de Movimentação
             </MenuItem>
           </SubMenu>
           <MenuItem icon={<LogoutRoundedIcon />} component={<Link to="login" className="link" />} onClick={logoutUser}> Logout </MenuItem>

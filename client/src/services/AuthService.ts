@@ -18,6 +18,7 @@ const isAuthenticated = () => {
 }
 
 const logout = () => {
+    localStorage.removeItem('user');
     localStorage.removeItem('token');
 }
 

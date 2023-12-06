@@ -21,8 +21,6 @@ public class ContaController  extends CrudController<Conta, ContaDTO, Long>{
         this.modelMapper = modelMapper;
     }
 
-
-
     @Override
     protected ICrudService<Conta, Long> getService() {
         return contaService;

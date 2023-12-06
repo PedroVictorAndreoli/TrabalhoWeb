@@ -1,7 +1,9 @@
 import { IContaCadastro, IMovimentacaoCadastro } from "@/commons/interfaces";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { Input } from '@/components/Input'
-
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { ChangeEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Box from '@mui/material/Box';
@@ -11,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from "react";
 import MovimentacaoService from "@/services/MovimentacaoService";
 import ContaService from "@/services/ContaService";
+import dayjs from 'dayjs';
 
 
 export function CadastroMovimentacaoPage() {
@@ -24,10 +27,11 @@ export function CadastroMovimentacaoPage() {
         situacaoMovimentacao: "",
         tipoMovimentacao: ""
     });
+
     const [errors, setErrors] = useState({
         id: undefined,
-        conta: { id: undefined, numero: "", banco: "", valor: 0 },
-        valor: 0,
+        conta: { id: undefined, numero: "", banco: "", saldo: 0, agencia: "", tipoConta: "" },
+        valor: "",
         dataMovimentacao: undefined,
         categoria: "",
         descricao: "",
@@ -84,26 +88,56 @@ export function CadastroMovimentacaoPage() {
             .catch(() => {
                 setApiError("Falha ao carregar a combo de categorias.");
             });
-
-
-
-
-
-        /*const currencies = [
-            {
-                value: 'ContaCorrente',
-                label: 'Conta Corrente',
-            },
-            {
-                value: 'ContaPoupanca',
-                label: 'Conta Poupança',
-            },
-            {
-                value: 'ContaInvestimento',
-                label: 'Conta Investimento',
-            },
-        ];*/
     }
+
+
+    const currencies = [
+        {
+            value: 'Pendente',
+            label: 'Pendente',
+        },
+        {
+            value: 'Pago',
+            label: 'Pago',
+        },
+    ];
+
+    const currencies1 = [
+        {
+            value: 'Receita',
+            label: 'Receita',
+        },
+        {
+            value: 'Despesa',
+            label: 'Despesa',
+        },
+        {
+            value: 'TransferenciaContasEntrada',
+            label: 'Transferencia entre Contas (Entrada)',
+        },
+        {
+            value: 'TransferenciaContasSaida',
+            label: 'Transferencia entre Contas (Saida)',
+        },
+    ];
+
+    const onChange = (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { value, name } = event.target;
+        setForm((previousForm) => {
+            return {
+                ...previousForm,
+                [name]: value,
+            };
+        });
+        setErrors((previousErrors) => {
+            return {
+                ...previousErrors,
+                [name]: undefined,
+            };
+        });
+    };
 
     const onSubmit = () => {
         console.log({ apiError })
@@ -136,6 +170,32 @@ export function CadastroMovimentacaoPage() {
         const { name, value } = event.target;
         setForm((previousState) => ({
             ...previousState,
+            [name]: { id: value },
+        }));
+
+        setErrors((previousState) => ({
+            ...previousState,
+            [name]: undefined,
+        }));
+    };
+
+    const handleChangeTipoMovimentacao = (event: SelectChangeEvent<typeof form.tipoMovimentacao>) => {
+        const { name, value } = event.target;
+        setForm((previousState) => ({
+            ...previousState,
+            [name]: value,
+        }));
+
+        setErrors((previousState) => ({
+            ...previousState,
+            [name]: undefined,
+        }));
+    };
+
+    const handleChangeSituacao = (event: SelectChangeEvent<typeof form.situacaoMovimentacao>) => {
+        const { name, value } = event.target;
+        setForm((previousState) => ({
+            ...previousState,
             [name]: value,
         }));
 
@@ -152,67 +212,66 @@ export function CadastroMovimentacaoPage() {
                     <h2 className="text-center">Cadastro de Contas</h2>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={2}>
-                            {/* <Grid xs={4}>
-                            <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                                <Input
-                                    label="Informe sua banco"
-                                    name="banco"
-                                    className="form-control w-100"
-                                    type="text"
-                                    placeholder="Informe sua conta"
-                                    value={form.banco}
-                                    onChange={onChange}
-                                    hasError={false}
-                                    error="" />
-                                {errors.banco && (
-                                    <div className="invalid-feedback">{errors.banco}</div>
-                                )}
-                            </FormControl>
-                        </Grid>
-                        <Grid xs={4}>
-                            <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                                <Input
-                                    label="Informe seu numero"
-                                    name="numero"
-                                    className="form-control w-100"
-                                    type="text"
-                                    placeholder="Informe seu numero"
-                                    value={form.numero}
-                                    onChange={onChange}
-                                    hasError={false}
-                                    error="" />
-                                {errors.numero && (
-                                    <div className="invalid-feedback">{errors.numero}</div>
-                                )}
-                            </FormControl>
-                        </Grid>
-                        <Grid xs={4}>
-                            <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                                <Input
-                                    label="Informe sua agencia"
-                                    name="agencia"
-                                    className="form-control w-100"
-                                    type="text"
-                                    placeholder="Informe sua agencia"
-                                    value={form.agencia}
-                                    onChange={onChange}
-                                    hasError={false}
-                                    error="" />
-                                {errors.agencia && (
-                                    <div className="invalid-feedback">{errors.agencia}</div>
-                                )}
-                            </FormControl>
-                                </Grid>*/}
+                            <Grid xs={4}>
+                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                    <Input
+                                        label="Informe a categoria da Movimentação"
+                                        name="categoria"
+                                        className="form-control w-100"
+                                        type="text"
+                                        placeholder="Informe a categoria"
+                                        value={form.categoria}
+                                        onChange={onChange}
+                                        hasError={false}
+                                        error="" />
+                                    {errors.categoria && (
+                                        <div className="invalid-feedback">{errors.categoria}</div>
+                                    )}
+                                </FormControl>
+                            </Grid>
+                            <Grid xs={4}>
+                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                    <Input
+                                        label="Informe o valor"
+                                        name="valor"
+                                        className="form-control w-100"
+                                        type="number"
+                                        placeholder="Informe o valor"
+                                        value={form.valor.toString()}
+                                        onChange={onChange}
+                                        hasError={false}
+                                        error="" />
+                                    {errors.valor && (
+                                        <div className="invalid-feedback">{errors.valor}</div>
+                                    )}
+                                </FormControl>
+                            </Grid>
+                            <Grid xs={4}>
+                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                    <Input
+                                        label="Informe a descricao"
+                                        name="descricao"
+                                        className="form-control w-100"
+                                        type="text"
+                                        placeholder="Informe a descricao"
+                                        value={form.descricao}
+                                        onChange={onChange}
+                                        hasError={false}
+                                        error="" />
+                                    {errors.descricao && (
+                                        <div className="invalid-feedback">{errors.descricao}</div>
+                                    )}
+                                </FormControl>
+                            </Grid>
                             <Grid xs={12}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                     <InputLabel id="demo-controlled-open-select-label">Tipo de Conta</InputLabel>
                                     <Select
                                         id="outlined-select-currency"
-                                        name="tipoMovimentacao"
-                                        label="Tipo de Conta"
+                                        name="conta"
+                                        label="Conta"
                                         value={form.conta.id}
-                                        onChange={handleChange}
-                                    >
+                                        onChange={handleChange}>
                                         {contas.map((option: IContaCadastro) => (
                                             <MenuItem key={option.id} value={option.id}>
                                                 Numero: {option.numero} Banco: {option.banco}
@@ -221,20 +280,63 @@ export function CadastroMovimentacaoPage() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            {/*<Grid xs={6}>
-                            <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                                <Input
-                                    label="Informe seu banco"
-                                    name="saldo"
-                                    className="form-control w-100"
-                                    type="number"
-                                    placeholder="Informe seu banco"
-                                    value={form.saldo.toString()}
-                                    onChange={onChange}
-                                    hasError={false}
-                                    error="" />
-                            </FormControl>
-                                    </Grid>*/}
+                            <Grid xs={6}>
+                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                    {/*<LocalizationProvider dateAdapter={AdapterDayjs}>
+
+                                        <DatePicker
+                                            label={'Informe a data'}
+
+                                            value={form.dataMovimentacao.toString()}
+                                            views={['year', 'month', 'day']}
+                                        />
+                                    </LocalizationProvider>*/}
+                                    <Input
+                                        label="Informe a data"
+                                        name="dataMovimentacao"
+                                        className="form-control w-100"
+                                        type="date"
+                                        placeholder="Informe a data"
+                                        value={form.dataMovimentacao}
+                                        onChange={onChange}
+                                        hasError={false}
+                                        error="" />
+                                    {errors.descricao && (
+                                        <div className="invalid-feedback">{errors.descricao}</div>
+                                    )}
+                                </FormControl>
+                            </Grid>
+                            <Grid xs={6}>
+                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                    <InputLabel id="demo-controlled-open-select-label">Situação</InputLabel>
+                                    <Select
+                                        id="outlined-select-currency"
+                                        name="situacaoMovimentacao"
+                                        label="Situação"
+                                        onChange={handleChangeSituacao}>
+                                        {currencies.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid xs={12}>
+                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                    <InputLabel id="demo-controlled-open-select-label">Tipo de Movimentação</InputLabel>
+                                    <Select
+                                        id="outlined-select-currency"
+                                        name="tipoMovimentacao"
+                                        onChange={handleChangeTipoMovimentacao}>
+                                        {currencies1.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
                             <Grid xs={12}>
                                 <ButtonWithProgress
                                     disabled={pendingApiCall}
