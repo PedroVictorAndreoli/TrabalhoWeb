@@ -10,7 +10,6 @@ org\example\enumList\SituacaoMovimentacao.class
 org\example\model\Usuario$UsuarioBuilder.class
 org\example\controller\UsuarioController.class
 org\example\enumList\TipoConta.class
-org\example\security\RSAGenerete.class
 org\example\dto\UsuarioDTO$UsuarioDTOBuilder.class
 org\example\Service\ICrudService.class
 org\example\dto\SecurityDTO$SecurityDTOBuilder.class
@@ -25,7 +24,6 @@ org\example\security\dto\UserResponseDTO.class
 org\example\Service\AuthService.class
 org\example\model\Conta.class
 org\example\controller\CrudController.class
-org\example\controller\EncodeController.class
 org\example\controller\MovimentacaoController.class
 org\example\security\JWTAuthenticationFilter.class
 org\example\model\Usuario.class

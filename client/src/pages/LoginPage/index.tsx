@@ -6,7 +6,7 @@ import SecurityService from "@/services/SecurityService";
 import { ChangeEvent, useState, useEffect } from "react";
 import * as forge from 'node-forge';
 import { Link, useNavigate } from "react-router-dom";
-import { PrivateKeyInput } from "crypto";
+import * as CryptoJS from 'crypto-js';
 
 
 export function LoginPage() {
@@ -40,9 +40,7 @@ export function LoginPage() {
     generateRSAKeyPair();
   }, []);
 
-  const [securityForm, setSecurityForm] = useState({
-    publicKey: ""
-  })
+
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -77,6 +75,20 @@ export function LoginPage() {
     return decryptedText;
   };
 
+  const encryptStringWithBlowfish = (text: string, key: string): string => {
+    // Convert the key to WordArray
+    const keyWordArray = CryptoJS.enc.Utf8.parse(key);
+
+    // Encrypt the text with Blowfish
+    const encrypted = CryptoJS.Blowfish.encrypt(text, keyWordArray, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+
+    // Convert the encrypted result to a Base64 string
+    const encryptedBase64 = CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+
+    return encryptedBase64;
+  };
+
+
   const onClickLogin = () => {
     setPendingApiCall(true);
     const userLogin: IUsuarioLogin = {
@@ -90,28 +102,30 @@ export function LoginPage() {
     //console.log(publicKey.replace(/-----BEGIN PUBLIC KEY-----|-----END PUBLIC KEY-----|\n|\r/g, ''));
 
     SecurityService.send(security).then((reponse) => {
-      console.log(decryptTextWithPrivateKey(reponse.data.toString()))
+      const key = decryptTextWithPrivateKey(reponse.data.toString())
+      userLogin.username = encryptStringWithBlowfish(userLogin.username, key)
+      userLogin.senha = encryptStringWithBlowfish(userLogin.senha, key)
+      console.log(userLogin.username)
+      AuthService.login(userLogin)
+        .then((response) => {
+          setUserAuthenticated(response.data.token);
+          localStorage.setItem("token", JSON.stringify(response.data.token));
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          setApiError("");
+          setPendingApiCall(false);
+          // direcionar o usuário para a página inicial
+          navigate("/");
+        })
+        .catch((responseError) => {
+          if (responseError.response.data) {
+            setApiError(responseError.response.data.message);
+            setUserAuthenticated("");
+          }
+        })
+        .finally(() => {
+          setPendingApiCall(false);
+        });
     })
-
-    AuthService.login(userLogin)
-      .then((response) => {
-        setUserAuthenticated(response.data.token);
-        localStorage.setItem("token", JSON.stringify(response.data.token));
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        setApiError("");
-        setPendingApiCall(false);
-        // direcionar o usuário para a página inicial
-        navigate("/");
-      })
-      .catch((responseError) => {
-        if (responseError.response.data) {
-          setApiError(responseError.response.data.message);
-          setUserAuthenticated("");
-        }
-      })
-      .finally(() => {
-        setPendingApiCall(false);
-      });
   };
 
   return (

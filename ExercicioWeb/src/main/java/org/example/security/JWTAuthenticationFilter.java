@@ -22,7 +22,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 
@@ -47,13 +53,19 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             //HTTP.POST {"username":"admin", "password":"P4ssword"}
             //Obtém os dados de username e password utilizando o ObjectMapper para converter o JSON
             //em um objeto User com esses dados.
+            BlowFishKeyGenerator b = new BlowFishKeyGenerator();
+            String secretMessage = b.generateKey("chave");
+            Usuario encrypt = new Usuario();
             Usuario credentials = new Usuario();
             Usuario user = new Usuario();
             //Verifica se o usuário existe no banco de dados, caso não exista uma Exception será disparada
             //e o código será parado de executar nessa parte e o usuário irá receber uma resposta
             //com falha na autenticação (classe: EntryPointUnauthorizedHandler)
             if (request.getInputStream() != null && request.getInputStream().available() > 0) {
-                credentials = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
+                encrypt =  new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
+                credentials.setSenha(b.decrypt(encrypt.getSenha(),secretMessage));
+                credentials.setUsername(b.decrypt(encrypt.getUsername(),secretMessage));
+                //credentials = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
                 user = (Usuario) authService.loadUserByUsername(credentials.getUsername());
             }
             //Caso o usuário seja encontrado, o objeto authenticationManager encarrega-se de autenticá-lo.
@@ -74,6 +86,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         } catch (DatabindException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidKeyException e) {
             throw new RuntimeException(e);
         }
     }
