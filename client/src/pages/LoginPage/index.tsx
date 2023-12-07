@@ -6,6 +6,7 @@ import SecurityService from "@/services/SecurityService";
 import { ChangeEvent, useState, useEffect } from "react";
 import * as forge from 'node-forge';
 import { Link, useNavigate } from "react-router-dom";
+import { PrivateKeyInput } from "crypto";
 
 
 export function LoginPage() {
@@ -60,7 +61,21 @@ export function LoginPage() {
       };
     });
   };
+  const decryptTextWithPrivateKey = (encryptedText: string) => {
+    // Converta a chave privada PEM para um objeto de chave privada
+    const privateKeyObject = forge.pki.privateKeyFromPem(privateKey);
 
+    // Converta o texto criptografado de base64 para bytes
+    const encryptedBytes = forge.util.decode64(encryptedText);
+
+    // Descriptografe os bytes usando a chave privada
+    const decryptedBytes = privateKeyObject.decrypt(encryptedBytes);
+
+    // Converta os bytes descriptografados de volta para uma string
+    const decryptedText = forge.util.decodeUtf8(decryptedBytes);
+
+    return decryptedText;
+  };
 
   const onClickLogin = () => {
     setPendingApiCall(true);
@@ -72,9 +87,12 @@ export function LoginPage() {
       publicKey: publicKey.replace(/-----BEGIN PUBLIC KEY-----|-----END PUBLIC KEY-----|\n|\r/g, '')
     }
 
-    console.log(publicKey.replace(/-----BEGIN PUBLIC KEY-----|-----END PUBLIC KEY-----|\n|\r/g, ''));
+    //console.log(publicKey.replace(/-----BEGIN PUBLIC KEY-----|-----END PUBLIC KEY-----|\n|\r/g, ''));
 
-    SecurityService.send(security)
+    SecurityService.send(security).then((reponse) => {
+      console.log(decryptTextWithPrivateKey(reponse.data.toString()))
+    })
+
     AuthService.login(userLogin)
       .then((response) => {
         setUserAuthenticated(response.data.token);

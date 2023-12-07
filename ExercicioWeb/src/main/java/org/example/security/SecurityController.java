@@ -43,6 +43,7 @@ public class SecurityController {
     public String createUser(@RequestBody SecurityDTO securityDTO) throws Exception {
         BlowFishKeyGenerator b = new BlowFishKeyGenerator();
         String secretMessage = b.generateKey("chave");
+        System.out.println(secretMessage);
         Cipher encryptCipher = Cipher.getInstance("RSA");
         PublicKey pk = convertStringToPublicKey(securityDTO.getPublicKey());
         encryptCipher.init(Cipher.ENCRYPT_MODE, pk);
