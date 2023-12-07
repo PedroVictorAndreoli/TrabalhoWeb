@@ -17,7 +17,9 @@ export interface IUsuarioCadastro {
     nome: string;
     senha: string;
 }
-
+export interface ISecurity {
+    publicKey: string
+}
 
 export interface IMovimentacaoCadastro {
     id?: number;

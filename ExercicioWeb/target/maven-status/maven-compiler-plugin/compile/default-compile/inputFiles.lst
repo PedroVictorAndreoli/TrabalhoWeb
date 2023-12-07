@@ -22,6 +22,7 @@ C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\examp
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\Service\Impl\ContaService.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\enumList\TipoMovimentacao.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\Main.java
+C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\dto\SecurityDTO.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\Service\ICrudService.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\shared\GenericResponse.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\Service\AuthService.java
@@ -32,6 +33,7 @@ C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\examp
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\Service\Impl\MovimentacaoService.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\error\ApiError.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\repository\MovimentacaoRepository.java
+C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\security\BlowFishKeyGenerator.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\security\dto\AuthorityResponseDTO.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\security\JWTAuthenticationFilter.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\security\dto\UserResponseDTO.java
@@ -41,4 +43,5 @@ C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\examp
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\security\RSAGenerete.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\error\ErrorHandler.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\Service\IMovimentacaoService.java
+C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\security\SecurityController.java
 C:\Users\Aluno\Documents\GitHub\TrabalhoWeb\ExercicioWeb\src\main\java\org\example\security\dto\AuthenticationResponse.java

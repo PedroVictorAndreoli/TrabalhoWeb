@@ -7,6 +7,7 @@ import { CadastroContaPage } from "@/pages/CadastroContaPage"
 import { ContaListPage } from "@/pages/ContaListPage";
 import { MovimentacaoListPage } from "@/pages/MovimentacaoListPage";
 import { CadastroMovimentacaoPage } from "@/pages/CadastroMovimentacaoPage";
+import RSAKeyGeneratornpm from "@/services/RSAService";
 export function BaseRoutes() {
   return (
     <>
@@ -14,6 +15,7 @@ export function BaseRoutes() {
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cadastro" element={<CadastroUserPage />} />
+        <Route path="/teste" element={<RSAKeyGeneratornpm />} />
 
         {/* Protected Routes */}
         <Route element={<AuthenticatedRoutes />}>

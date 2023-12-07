@@ -1,12 +1,15 @@
-import { IUsuarioLogin } from "@/commons/interfaces";
+import { ISecurity, IUsuarioLogin } from "@/commons/interfaces";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { Input } from "@/components/Input";
 import AuthService from "@/services/AuthService";
-import { ChangeEvent, useState } from "react";
+import SecurityService from "@/services/SecurityService";
+import { ChangeEvent, useState, useEffect } from "react";
+import * as forge from 'node-forge';
 import { Link, useNavigate } from "react-router-dom";
-import { publicEncrypt, constants } from 'crypto';
+
 
 export function LoginPage() {
+
   const [form, setForm] = useState({
     username: "",
     senha: "",
@@ -19,8 +22,26 @@ export function LoginPage() {
   const [userAuthenticated, setUserAuthenticated] = useState("");
   const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
+  const [publicKey, setPublicKey] = useState<string>('');
+  const [privateKey, setPrivateKey] = useState<string>('');
 
+  useEffect(() => {
+    const generateRSAKeyPair = () => {
+      const keyPair = forge.pki.rsa.generateKeyPair({ bits: 2048 });
 
+      const publicKeyPem = forge.pki.publicKeyToPem(keyPair.publicKey);
+      const privateKeyPem = forge.pki.privateKeyToPem(keyPair.privateKey);
+
+      setPublicKey(publicKeyPem);
+      setPrivateKey(privateKeyPem);
+    };
+
+    generateRSAKeyPair();
+  }, []);
+
+  const [securityForm, setSecurityForm] = useState({
+    publicKey: ""
+  })
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -40,17 +61,20 @@ export function LoginPage() {
     });
   };
 
+
   const onClickLogin = () => {
     setPendingApiCall(true);
     const userLogin: IUsuarioLogin = {
       username: form.username,
       senha: form.senha,
     };
+    const security: ISecurity = {
+      publicKey: publicKey.replace(/-----BEGIN PUBLIC KEY-----|-----END PUBLIC KEY-----|\n|\r/g, '')
+    }
 
-    AuthService.publicKey().then((response) => {
-      console.log(response)
-    })
+    console.log(publicKey.replace(/-----BEGIN PUBLIC KEY-----|-----END PUBLIC KEY-----|\n|\r/g, ''));
 
+    SecurityService.send(security)
     AuthService.login(userLogin)
       .then((response) => {
         setUserAuthenticated(response.data.token);
@@ -94,10 +118,6 @@ export function LoginPage() {
               hasError={false}
               error=""
             />
-
-
-
-
           </div>
 
           <div className="form-floating mb-3">

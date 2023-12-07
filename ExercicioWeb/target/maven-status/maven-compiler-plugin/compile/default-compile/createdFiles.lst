@@ -13,6 +13,7 @@ org\example\enumList\TipoConta.class
 org\example\security\RSAGenerete.class
 org\example\dto\UsuarioDTO$UsuarioDTOBuilder.class
 org\example\Service\ICrudService.class
+org\example\dto\SecurityDTO$SecurityDTOBuilder.class
 org\example\config\WebConfig.class
 org\example\enumList\TipoMovimentacao.class
 org\example\error\ExceptionHandlerAdvice.class
@@ -33,11 +34,14 @@ org\example\Service\Impl\MovimentacaoService.class
 org\example\repository\UsuarioRepository.class
 org\example\validator\UnicoUsernameValidator.class
 org\example\controller\ContaController.class
+org\example\security\BlowFishKeyGenerator.class
 org\example\security\dto\AuthorityResponseDTO.class
 org\example\repository\MovimentacaoRepository.class
 org\example\annotation\UnicoUsername.class
 org\example\Service\Impl\ContaService.class
+org\example\controller\SecurityController.class
 org\example\repository\ContaRepository.class
+org\example\dto\SecurityDTO.class
 org\example\model\Movimentacao.class
 org\example\security\dto\AuthorityResponseDTO$AuthorityResponseDTOBuilder.class
 org\example\Service\IContaService.class
