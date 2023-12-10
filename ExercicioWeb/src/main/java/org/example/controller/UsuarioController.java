@@ -22,5 +22,4 @@ public class UsuarioController {
         genericResponse.setMessage("User saved");
         return genericResponse;
     }
-
 }

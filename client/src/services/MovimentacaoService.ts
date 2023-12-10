@@ -6,6 +6,15 @@ const findAll = () => {
     return api.get('/movimentacoes');
 }
 
+const findSaldoFuturo = () => {
+    return api.get('movimentacoes/saldoFuturo');
+}
+
+const findOneMaiorCategoria = () => {
+    return api.get('/movimentacoes/maiorvalor');
+}
+
+
 const save = (category: IMovimentacaoCadastro) => {
     return api.post('/movimentacoes', category);
 }
@@ -27,6 +36,8 @@ const ContaService = {
     save,
     findById,
     remove,
+    findSaldoFuturo,
+    findOneMaiorCategoria,
     update
 }
 

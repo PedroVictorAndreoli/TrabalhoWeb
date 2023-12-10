@@ -19,6 +19,7 @@ import Typography from '@mui/material/Typography';
 import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import Icon from "@mui/material";
 import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
+import { MainCard } from "@/components/MainCard/MainCard";
 export function DashboardPage() {
     const [form, setForm] = useState({
         id: undefined,
@@ -48,10 +49,17 @@ export function DashboardPage() {
     const [contas, setContas] = useState<IContaCadastro[]>([]);
     const { id } = useParams();
     const [data, setData] = useState([]);
+    const [dataMovimentacao, setDataMovimentacao] = useState([]);
+    const [dataSaldoFuturo, setDataSaldoFuturo] = useState([]);
     const [somaSaldo, setSomaSaldo] = useState<number>(0);
+    const [maiorGasto, setMaiorGasto] = useState<number>(0);
+    const [categoria, setCategoriaGasto] = useState<string>('');
+    const [saldoFuturo, setSaldoFuturo] = useState<number>(0);
 
     useEffect(() => {
         loadData();
+        loadDataValor();
+        loadSaldoFuturo();
     }, []);
 
     useEffect(() => {
@@ -86,103 +94,40 @@ export function DashboardPage() {
                 // Calcula a soma dos saldos quando os dados são carregados
                 const saldoTotal = response.data.reduce((total: number, conta: IContaCadastro) => total + conta.saldo, 0);
                 setSomaSaldo(saldoTotal);
+
             })
             .catch((error) => {
                 console.log(error);
             });
     };
 
-
-    const onChange = (
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { value, name } = event.target;
-        setForm((previousForm) => {
-            return {
-                ...previousForm,
-                [name]: value,
-            };
-        });
-        setErrors((previousErrors) => {
-            return {
-                ...previousErrors,
-                [name]: undefined,
-            };
-        });
-    };
-
-    const onSubmit = () => {
-        console.log({ apiError })
-        const category: IMovimentacaoCadastro = {
-            id: form.id,
-            conta: form.conta,
-            valor: form.valor,
-            dataMovimentacao: form.dataMovimentacao,
-            categoria: form.categoria,
-            descricao: form.descricao,
-            situacaoMovimentacao: form.situacaoMovimentacao,
-            tipoMovimentacao: form.tipoMovimentacao
-        };
-        setPendingApiCall(true);
-        MovimentacaoService.save(category)
+    const loadDataValor = () => {
+        MovimentacaoService.findOneMaiorCategoria()
             .then((response) => {
-                console.log(response);
-                setPendingApiCall(false);
-                navigate("/movimentacoes");
-            })
-            .catch((responseError) => {
-                if (responseError.response.data.validationErrors) {
-                    setErrors(responseError.response.data.validationErrors);
-                }
-                setPendingApiCall(false);
-                setApiError("");
+                setDataMovimentacao(response.data);
+                const maiorGasto = response.data.valor;
+                setMaiorGasto(maiorGasto);
+                const categoria = response.data.categoria;
+                setCategoriaGasto(categoria);
+            }).catch((error) => {
+                console.log(error);
             });
-    };
-    const handleChange = (event: SelectChangeEvent<typeof form.conta>) => {
-        const { name, value } = event.target;
-        setForm((previousState) => ({
-            ...previousState,
-            [name]: { id: value },
-        }));
+    }
 
-        setErrors((previousState) => ({
-            ...previousState,
-            [name]: undefined,
-        }));
-    };
-
-    const handleChangeTipoMovimentacao = (event: SelectChangeEvent<typeof form.tipoMovimentacao>) => {
-        const { name, value } = event.target;
-        setForm((previousState) => ({
-            ...previousState,
-            [name]: value,
-        }));
-
-        setErrors((previousState) => ({
-            ...previousState,
-            [name]: undefined,
-        }));
-    };
-
-    const handleChangeSituacao = (event: SelectChangeEvent<typeof form.situacaoMovimentacao>) => {
-        const { name, value } = event.target;
-        setForm((previousState) => ({
-            ...previousState,
-            [name]: value,
-        }));
-
-        setErrors((previousState) => ({
-            ...previousState,
-            [name]: undefined,
-        }));
-    };
-
+    const loadSaldoFuturo = () => {
+        MovimentacaoService.findSaldoFuturo()
+            .then((response) => {
+                setDataSaldoFuturo(response.data);
+                const saldoFuturo = response.data;
+                setSaldoFuturo(saldoFuturo);
+            })
+    }
 
     const card = (
         <React.Fragment>
             <CardContent>
                 <Typography variant="h5" component="div">
-                    Saldo Total
+                    Maior Gasto
                 </Typography>
                 <Grid container spacing={0}>
                     < PriceChangeIcon sx={{ fontSize: 60 }} />
@@ -196,9 +141,12 @@ export function DashboardPage() {
                         }}
                     >
                         <Typography variant="h6" component="div" sx={{ ml: 1.5 }}>
-                            R$ {somaSaldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            R$ {maiorGasto.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </Typography>
                     </Box>
+                </Grid>
+                <Grid container spacing={0}>
+                    <p>Maior gasto {categoria}</p>
                 </Grid>
 
             </CardContent>
@@ -211,17 +159,30 @@ export function DashboardPage() {
                     <h2 className="text-center">Dashboard</h2>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={1}>
-                            <Grid xs={2}>
+                            <Grid xs={4}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                     <Box sx={{ maxWidth: 275 }}>
-                                        <Card variant="outlined">{card}</Card>
+                                        <Card variant="outlined"><MainCard
+                                            label='Maior Gasto' numero={maiorGasto.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} descricao="Maior gasto: " descricaoComplemento={categoria}
+                                        ></MainCard></Card>
                                     </Box>
                                 </FormControl>
                             </Grid>
-                            <Grid xs={2}>
+                            <Grid xs={4}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                     <Box sx={{ maxWidth: 275 }}>
-                                        <Card variant="outlined">{card}</Card>
+                                        <Card variant="outlined"><MainCard
+                                            label='Saldo Total' numero={somaSaldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} descricao=" " descricaoComplemento=""
+                                        ></MainCard></Card>
+                                    </Box>
+                                </FormControl>
+                            </Grid>
+                            <Grid xs={4}>
+                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                    <Box sx={{ maxWidth: 275 }}>
+                                        <Card variant="outlined"><MainCard
+                                            label='Saldo Futuro' numero={saldoFuturo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} descricao=" " descricaoComplemento=""
+                                        ></MainCard></Card>
                                     </Box>
                                 </FormControl>
                             </Grid>

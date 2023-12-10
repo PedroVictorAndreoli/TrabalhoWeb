@@ -7,6 +7,8 @@ import org.example.repository.UsuarioRepository;
 import org.example.Service.IMovimentacaoService;
 import org.example.model.Movimentacao;
 import org.example.repository.MovimentacaoRepository;
+import org.example.repository.interfaces.ValorAndCategoriaMovimentacao;
+import org.example.repository.interfaces.ValorMovimentacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -73,5 +75,37 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
     public void delete(Long id) {
         movimentaSaldoContaDelete(movimentacaoRepository.findMovimentacaoById(id));
         movimentacaoRepository.deleteById(id);
+    }
+    public List<ValorAndCategoriaMovimentacao> findCategoriaMaisGasta(){
+        Usuario user = usuarioRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        return movimentacaoRepository.findValorAndCategoriaWhereSitucaoIsPagoGroupByCategoriaOrderByValor(user.getId());
+    }
+
+    public Double findPendente(){
+        Usuario user = usuarioRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        System.out.println(movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId()));
+        if (movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId()) == null
+                && movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId()) == null) {
+            return 0.0;
+        } else if (movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId()) == null
+                && movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId()) != null) {
+
+            return -movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId());
+        }else if (movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId()) ==null &&
+                movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId()) != null)  {
+            System.out.println(movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId()));
+            return movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId());
+        }else
+        return movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId())
+                - movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId());
+    }
+
+    public Double saldoFuturo(){
+        Usuario user = usuarioRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Double saldoTotal =contaRepository.findContaByUsuario(user).stream()
+                .mapToDouble(Conta::getSaldo)
+                .filter(saldo -> !Double.isNaN(saldo))
+                .sum();
+        return  saldoTotal + findPendente();
     }
 }
