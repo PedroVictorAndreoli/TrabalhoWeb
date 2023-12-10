@@ -30,13 +30,20 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
     }
     protected void movimentaSaldoConta(Movimentacao movimentacao){
         Conta conta =  contaRepository.findContaById(movimentacao.getConta().getId());
-        if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasSaida") || movimentacao.getTipoMovimentacao().toString().equals("Despesa"))
+        if((movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasSaida") || movimentacao.getTipoMovimentacao().toString().equals("Despesa"))&& movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
             conta.setSaldo(conta.getSaldo() - movimentacao.getValor());
-        else if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasEntrada") || movimentacao.getTipoMovimentacao().toString().equals("Receita"))
+        else if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasEntrada") || movimentacao.getTipoMovimentacao().toString().equals("Receita")&& movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
             conta.setSaldo(conta.getSaldo() + movimentacao.getValor());
         contaRepository.save(conta);
     }
-
+    protected void movimentaSaldoContaDelete(Movimentacao movimentacao){
+        Conta conta =  contaRepository.findContaById(movimentacao.getConta().getId());
+        if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasSaida") || movimentacao.getTipoMovimentacao().toString().equals("Despesa")&& movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
+            conta.setSaldo(conta.getSaldo() + movimentacao.getValor());
+        else if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasEntrada") || movimentacao.getTipoMovimentacao().toString().equals("Receita")&& movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
+            conta.setSaldo(conta.getSaldo() - movimentacao.getValor());
+        contaRepository.save(conta);
+    }
     @Override
     public Movimentacao save(Movimentacao entity) throws Exception {
         movimentaSaldoConta(entity);
@@ -64,7 +71,7 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
 
     @Override
     public void delete(Long id) {
-        contaRepository.findContaById(id);
-        contaRepository.deleteById(id);
+        movimentaSaldoContaDelete(movimentacaoRepository.findMovimentacaoById(id));
+        movimentacaoRepository.deleteById(id);
     }
 }

@@ -10,4 +10,6 @@ import java.util.List;
 public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long> {
 
     List<Movimentacao> findMovimentacaoByConta(Conta conta);
+
+    Movimentacao findMovimentacaoById(Long id);
 }

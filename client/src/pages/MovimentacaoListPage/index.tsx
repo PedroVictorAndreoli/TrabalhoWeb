@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import ContaService from "@/services/ContaService";
-import { IContaCadastro, IMovimentacaoCadastro } from "@/commons/interfaces";
+import { IMovimentacaoCadastro } from "@/commons/interfaces";
 import { Link } from "react-router-dom";
 import MovimentacaoService from "@/services/MovimentacaoService";
 
@@ -24,7 +23,7 @@ export function MovimentacaoListPage() {
 
     const onClickRemove = (id?: number) => {
         if (id) {
-            ContaService.remove(id)
+            MovimentacaoService.remove(id)
                 .then(() => {
                     loadData();
                     setApiError("");

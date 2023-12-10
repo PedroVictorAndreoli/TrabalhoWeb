@@ -7,6 +7,7 @@ import { CadastroContaPage } from "@/pages/CadastroContaPage"
 import { ContaListPage } from "@/pages/ContaListPage";
 import { MovimentacaoListPage } from "@/pages/MovimentacaoListPage";
 import { CadastroMovimentacaoPage } from "@/pages/CadastroMovimentacaoPage";
+import { DashboardPage } from "@/pages/DashboardPage";
 import RSAKeyGeneratornpm from "@/services/RSAService";
 export function BaseRoutes() {
   return (
@@ -28,6 +29,7 @@ export function BaseRoutes() {
           <Route path="/cadastroMovimentacao/new" element={<CadastroMovimentacaoPage />} />
           <Route path="/cadastroMovimentacao/:id" element={<CadastroMovimentacaoPage />} />
           <Route path="/movimentacoes" element={<MovimentacaoListPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
           {/* <Route path="/categories" element={<CategoryListPage />} />
                 <Route path="/categories/new" element={<CategoryFormPage />} />
                 <Route path="/categories/:id" element={<CategoryFormPage />} />

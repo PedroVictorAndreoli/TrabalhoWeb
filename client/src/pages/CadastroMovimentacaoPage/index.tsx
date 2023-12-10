@@ -1,9 +1,6 @@
 import { IContaCadastro, IMovimentacaoCadastro } from "@/commons/interfaces";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { Input } from '@/components/Input'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { ChangeEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Box from '@mui/material/Box';
@@ -13,7 +10,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from "react";
 import MovimentacaoService from "@/services/MovimentacaoService";
 import ContaService from "@/services/ContaService";
-import dayjs from 'dayjs';
 
 
 export function CadastroMovimentacaoPage() {
@@ -40,7 +36,6 @@ export function CadastroMovimentacaoPage() {
     });
 
     const [pendingApiCall, setPendingApiCall] = useState(false);
-    const [data, setData] = useState([]);
     const [apiError, setApiError] = useState("");
     const navigate = useNavigate();
     const [contas, setContas] = useState<IContaCadastro[]>([]);
@@ -295,8 +290,8 @@ export function CadastroMovimentacaoPage() {
                                         label="Informe a data"
                                         name="dataMovimentacao"
                                         className="form-control w-100"
+                                        placeholder=""
                                         type="date"
-                                        placeholder="Informe a data"
                                         value={form.dataMovimentacao}
                                         onChange={onChange}
                                         hasError={false}

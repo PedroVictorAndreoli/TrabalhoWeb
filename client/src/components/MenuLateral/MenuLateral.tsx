@@ -36,7 +36,6 @@ export function MenuLateral() {
           <MenuItem
             component={<Link to="/" className="link" />}
             className="menu1"
-            icon={<MenuRoundedIcon />}
           >
             <h2>QUICKPAY</h2>
           </MenuItem>

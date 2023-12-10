@@ -134,11 +134,11 @@ export function CadastroContaPage() {
               <Grid xs={4}>
                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                   <Input
-                    label="Informe sua banco"
+                    label="Informe seu banco"
                     name="banco"
                     className="form-control w-100"
+                    placeholder=""
                     type="text"
-                    placeholder="Informe sua conta"
                     value={form.banco}
                     onChange={onChange}
                     hasError={false}
