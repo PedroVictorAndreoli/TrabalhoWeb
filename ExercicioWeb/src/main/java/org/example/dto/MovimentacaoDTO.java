@@ -31,6 +31,7 @@ public class MovimentacaoDTO {
     @NotNull
     private String categoria;
     private String descricao;
+    private Conta contaDestino;
     @NotNull
     @Enumerated(EnumType.STRING)
     private SituacaoMovimentacao situacaoMovimentacao;

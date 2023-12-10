@@ -21,7 +21,8 @@ export function CadastroMovimentacaoPage() {
         categoria: "",
         descricao: "",
         situacaoMovimentacao: "",
-        tipoMovimentacao: ""
+        tipoMovimentacao: "",
+        contaDestino: { id: undefined, numero: "", banco: "", saldo: 0, agencia: "", tipoConta: "" },
     });
 
     const [errors, setErrors] = useState({
@@ -32,7 +33,8 @@ export function CadastroMovimentacaoPage() {
         categoria: "",
         descricao: "",
         situacaoMovimentacao: "",
-        tipoMovimentacao: ""
+        tipoMovimentacao: "",
+        contaDestino: { id: undefined, numero: "", banco: "", saldo: 0, agencia: "", tipoConta: "" },
     });
 
     const [pendingApiCall, setPendingApiCall] = useState(false);
@@ -59,7 +61,8 @@ export function CadastroMovimentacaoPage() {
                             categoria: response.data.categoria,
                             descricao: response.data.descricao,
                             situacaoMovimentacao: response.data.situacaoMovimentacao,
-                            tipoMovimentacao: response.data.tipoMovimentacao
+                            tipoMovimentacao: response.data.tipoMovimentacao,
+                            contaDestino: { id: response.data.contaDestino.id, numero: "", banco: "", saldo: 0, agencia: "", tipoConta: "" },
                         });
 
 
@@ -144,7 +147,8 @@ export function CadastroMovimentacaoPage() {
             categoria: form.categoria,
             descricao: form.descricao,
             situacaoMovimentacao: form.situacaoMovimentacao,
-            tipoMovimentacao: form.tipoMovimentacao
+            tipoMovimentacao: form.tipoMovimentacao,
+            contaDestino: form.contaDestino
         };
         setPendingApiCall(true);
         MovimentacaoService.save(category)
@@ -260,7 +264,7 @@ export function CadastroMovimentacaoPage() {
                             </Grid>
                             <Grid xs={12}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                                    <InputLabel id="demo-controlled-open-select-label">Tipo de Conta</InputLabel>
+                                    <InputLabel id="demo-controlled-open-select-label">Conta</InputLabel>
                                     <Select
                                         id="outlined-select-currency"
                                         name="conta"
@@ -277,15 +281,6 @@ export function CadastroMovimentacaoPage() {
                             </Grid>
                             <Grid xs={6}>
                                 <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                                    {/*<LocalizationProvider dateAdapter={AdapterDayjs}>
-
-                                        <DatePicker
-                                            label={'Informe a data'}
-
-                                            value={form.dataMovimentacao.toString()}
-                                            views={['year', 'month', 'day']}
-                                        />
-                                    </LocalizationProvider>*/}
                                     <Input
                                         label="Informe a data"
                                         name="dataMovimentacao"
@@ -327,6 +322,23 @@ export function CadastroMovimentacaoPage() {
                                         {currencies1.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
                                                 {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid xs={12}>
+                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                    <InputLabel id="demo-controlled-open-select-label">Conta de Destino</InputLabel>
+                                    <Select
+                                        id="outlined-select-currency"
+                                        name="contaDestino"
+                                        label="Conta de Destino"
+                                        value={form.contaDestino.id}
+                                        onChange={handleChange}>
+                                        {contas.map((option: IContaCadastro) => (
+                                            <MenuItem key={option.id} value={option.id}>
+                                                Numero: {option.numero} Banco: {option.banco}
                                             </MenuItem>
                                         ))}
                                     </Select>

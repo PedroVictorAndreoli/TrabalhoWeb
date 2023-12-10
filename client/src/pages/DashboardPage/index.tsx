@@ -1,53 +1,14 @@
-import { IContaCadastro, IMovimentacaoCadastro } from "@/commons/interfaces";
-import { ButtonWithProgress } from "@/components/ButtonWithProgress";
-import { Input } from '@/components/Input'
-import { ChangeEvent, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { IContaCadastro } from "@/commons/interfaces";
+import { useState } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
-import { FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material";
-import MenuItem from '@mui/material/MenuItem';
+import { FormControl } from "@mui/material";
 import { useEffect } from "react";
 import MovimentacaoService from "@/services/MovimentacaoService";
 import ContaService from "@/services/ContaService";
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import PriceChangeIcon from '@mui/icons-material/PriceChange';
-import Icon from "@mui/material";
-import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
 import { MainCard } from "@/components/MainCard/MainCard";
 export function DashboardPage() {
-    const [form, setForm] = useState({
-        id: undefined,
-        conta: { id: undefined, numero: "", banco: "", saldo: 0, agencia: "", tipoConta: "" },
-        valor: 0,
-        dataMovimentacao: "",
-        categoria: "",
-        descricao: "",
-        situacaoMovimentacao: "",
-        tipoMovimentacao: ""
-    });
-
-    const [errors, setErrors] = useState({
-        id: undefined,
-        conta: { id: undefined, numero: "", banco: "", saldo: 0, agencia: "", tipoConta: "" },
-        valor: "",
-        dataMovimentacao: undefined,
-        categoria: "",
-        descricao: "",
-        situacaoMovimentacao: "",
-        tipoMovimentacao: ""
-    });
-
-    const [pendingApiCall, setPendingApiCall] = useState(false);
-    const [apiError, setApiError] = useState("");
-    const navigate = useNavigate();
-    const [contas, setContas] = useState<IContaCadastro[]>([]);
-    const { id } = useParams();
     const [data, setData] = useState([]);
     const [dataMovimentacao, setDataMovimentacao] = useState([]);
     const [dataSaldoFuturo, setDataSaldoFuturo] = useState([]);
@@ -61,32 +22,6 @@ export function DashboardPage() {
         loadDataValor();
         loadSaldoFuturo();
     }, []);
-
-    useEffect(() => {
-        if (id) {
-            ContaService.findById(parseInt(id))
-                .then((response) => {
-                    if (response.data) {
-                        setForm({
-                            id: response.data.id,
-                            conta: { id: response.data.conta.id, numero: "", banco: "", saldo: 0, agencia: "", tipoConta: "" },
-                            valor: response.data.valor,
-                            dataMovimentacao: response.data.dataMovimentacao,
-                            categoria: response.data.categoria,
-                            descricao: response.data.descricao,
-                            situacaoMovimentacao: response.data.situacaoMovimentacao,
-                            tipoMovimentacao: response.data.tipoMovimentacao
-                        });
-
-
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
-    }, []);
-
     const loadData = () => {
         ContaService.findAll()
             .then((response) => {
@@ -123,35 +58,6 @@ export function DashboardPage() {
             })
     }
 
-    const card = (
-        <React.Fragment>
-            <CardContent>
-                <Typography variant="h5" component="div">
-                    Maior Gasto
-                </Typography>
-                <Grid container spacing={0}>
-                    < PriceChangeIcon sx={{ fontSize: 60 }} />
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            textAlign: 'center',
-                        }}
-                    >
-                        <Typography variant="h6" component="div" sx={{ ml: 1.5 }}>
-                            R$ {maiorGasto.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                        </Typography>
-                    </Box>
-                </Grid>
-                <Grid container spacing={0}>
-                    <p>Maior gasto {categoria}</p>
-                </Grid>
-
-            </CardContent>
-        </React.Fragment >
-    );
     return (
         <div>
             <main className="container">

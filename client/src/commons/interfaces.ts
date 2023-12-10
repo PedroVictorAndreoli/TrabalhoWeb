@@ -30,4 +30,5 @@ export interface IMovimentacaoCadastro {
     descricao: string;
     situacaoMovimentacao: string;
     tipoMovimentacao: string;
+    contaDestino: IContaCadastro;
 }

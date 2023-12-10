@@ -1,5 +1,6 @@
 package org.example.Service.Impl;
 
+import org.example.enumList.TipoMovimentacao;
 import org.example.model.Conta;
 import org.example.model.Usuario;
 import org.example.repository.ContaRepository;
@@ -38,6 +39,15 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
             conta.setSaldo(conta.getSaldo() + movimentacao.getValor());
         contaRepository.save(conta);
     }
+
+    protected void movimentaSaldoConta(Movimentacao movimentacao,Conta conta1){
+        Conta conta =  contaRepository.findContaById(conta1.getId());
+        if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasSaida") && movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
+            conta.setSaldo(conta.getSaldo() - movimentacao.getValor());
+        else if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasEntrada") && movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
+            conta.setSaldo(conta.getSaldo() + movimentacao.getValor());
+        contaRepository.save(conta);
+    }
     protected void movimentaSaldoContaDelete(Movimentacao movimentacao){
         Conta conta =  contaRepository.findContaById(movimentacao.getConta().getId());
         if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasSaida") || movimentacao.getTipoMovimentacao().toString().equals("Despesa")&& movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
@@ -48,7 +58,25 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
     }
     @Override
     public Movimentacao save(Movimentacao entity) throws Exception {
+        if (entity.getContaDestino() == null){
         movimentaSaldoConta(entity);
+        }else{
+            Movimentacao movimentacaoDestino = new Movimentacao();
+            movimentacaoDestino.setDataMovimentacao(entity.getDataMovimentacao());
+            if(entity.getTipoMovimentacao().toString().equals("TransferenciaContasSaida") )
+                movimentacaoDestino.setTipoMovimentacao(TipoMovimentacao.TransferenciaContasEntrada);
+            else
+                movimentacaoDestino.setTipoMovimentacao(TipoMovimentacao.TransferenciaContasSaida);
+            movimentacaoDestino.setSituacaoMovimentacao(entity.getSituacaoMovimentacao());
+            movimentacaoDestino.setCategoria(entity.getCategoria());
+            movimentacaoDestino.setDescricao(entity.getDescricao());
+            movimentacaoDestino.setValor(entity.getValor());
+            movimentacaoDestino.setConta(entity.getContaDestino());
+            movimentacaoDestino.setContaDestino(entity.getConta());
+            movimentaSaldoConta(entity);
+            movimentaSaldoConta(entity,entity.getContaDestino());
+            super.save(movimentacaoDestino);
+        }
         return super.save(entity);
     }
 
@@ -83,17 +111,14 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
 
     public Double findPendente(){
         Usuario user = usuarioRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        System.out.println(movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId()));
         if (movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId()) == null
                 && movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId()) == null) {
             return 0.0;
         } else if (movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId()) == null
                 && movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId()) != null) {
-
             return -movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId());
         }else if (movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId()) ==null &&
                 movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId()) != null)  {
-            System.out.println(movimentacaoRepository.findValorWhereSituacaoIsPendenteSaida(user.getId()));
             return movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId());
         }else
         return movimentacaoRepository.findValorWhereSituacaoIsPendenteEntrada(user.getId())

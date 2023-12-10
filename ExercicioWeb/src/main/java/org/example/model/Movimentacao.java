@@ -30,10 +30,15 @@ public class Movimentacao {
     @NotNull
     private String categoria;
     private String descricao;
+    @ManyToOne
+    @JoinColumn(name = "conta_destino_id", referencedColumnName = "id")
+    private Conta contaDestino;
     @NotNull
     @Enumerated(EnumType.STRING)
     private SituacaoMovimentacao situacaoMovimentacao;
     @NotNull
     @Enumerated(EnumType.STRING)
     private TipoMovimentacao tipoMovimentacao;
+
+
 }
