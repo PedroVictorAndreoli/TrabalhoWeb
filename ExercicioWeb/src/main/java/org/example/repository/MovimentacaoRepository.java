@@ -21,7 +21,7 @@ public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long
     @Query(value =
             "SELECT SUM(M.VALOR) as VALOR, M.CATEGORIA as CATEGORIA FROM MOVIMENTACAO M " +
                     "INNER JOIN CONTA C ON C.ID = M.CONTA_ID " +
-                    "WHERE  M.SITUACAO_MOVIMENTACAO = 'Pago' AND " +
+                    "WHERE  M.SITUACAO_MOVIMENTACAO = 'Pago' AND  (M.TIPO_MOVIMENTACAO = 'Despesa') AND" +
                     "C.USUARIO_ID= :usuarioId "+
                     "GROUP BY CATEGORIA ORDER BY VALOR "
             , nativeQuery = true
