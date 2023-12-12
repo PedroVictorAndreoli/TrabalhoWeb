@@ -18,10 +18,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class MovimentacaoDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-    @ManyToOne
     @NotNull
     private ContaDTO conta;
     @NotNull
@@ -31,7 +29,9 @@ public class MovimentacaoDTO {
     @NotNull
     private String categoria;
     private String descricao;
-    private Conta contaDestino;
+
+    private ContaDTO contaDestino;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private SituacaoMovimentacao situacaoMovimentacao;

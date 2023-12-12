@@ -32,7 +32,7 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
         this.contaRepository = contaRepository;
     }
     protected void movimentaSaldoConta(Movimentacao movimentacao){
-        Conta conta =  contaRepository.findContaById(movimentacao.getConta().getId());
+        Conta conta =  contaRepository.findById(movimentacao.getConta().getId()).orElse(null);
         if((movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasSaida") || movimentacao.getTipoMovimentacao().toString().equals("Despesa"))&& movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
             conta.setSaldo(conta.getSaldo() - movimentacao.getValor());
         else if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasEntrada") || movimentacao.getTipoMovimentacao().toString().equals("Receita")&& movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
@@ -43,9 +43,9 @@ public class MovimentacaoService extends CrudService<Movimentacao, Long>
     protected void movimentaSaldoConta(Movimentacao movimentacao,Conta conta1){
         Conta conta =  contaRepository.findContaById(conta1.getId());
         if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasSaida") && movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
-            conta.setSaldo(conta.getSaldo() - movimentacao.getValor());
-        else if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasEntrada") && movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
             conta.setSaldo(conta.getSaldo() + movimentacao.getValor());
+        else if(movimentacao.getTipoMovimentacao().toString().equals("TransferenciaContasEntrada") && movimentacao.getSituacaoMovimentacao().toString().equals("Pago"))
+            conta.setSaldo(conta.getSaldo() - movimentacao.getValor());
         contaRepository.save(conta);
     }
     protected void movimentaSaldoContaDelete(Movimentacao movimentacao){

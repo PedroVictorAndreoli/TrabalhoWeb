@@ -190,6 +190,7 @@ export function CadastroContaPage() {
                     name="tipoConta"
                     label="Tipo de Conta"
                     onChange={handleChange}
+                    defaultValue= ""
                   >
                     {currencies.map((option) => (
                       <MenuItem key={option.value} value={option.value}>

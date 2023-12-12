@@ -139,7 +139,7 @@ export function CadastroMovimentacaoPage() {
 
     const onSubmit = () => {
         console.log({ apiError })
-        const category: IMovimentacaoCadastro = {
+        let category: IMovimentacaoCadastro = {
             id: form.id,
             conta: form.conta,
             valor: form.valor,
@@ -147,9 +147,11 @@ export function CadastroMovimentacaoPage() {
             categoria: form.categoria,
             descricao: form.descricao,
             situacaoMovimentacao: form.situacaoMovimentacao,
-            tipoMovimentacao: form.tipoMovimentacao,
-            contaDestino: form.contaDestino
+            tipoMovimentacao: form.tipoMovimentacao
         };
+        if (form.contaDestino.id) {
+            category.contaDestino = form.contaDestino;
+        }
         setPendingApiCall(true);
         MovimentacaoService.save(category)
             .then((response) => {
@@ -177,6 +179,20 @@ export function CadastroMovimentacaoPage() {
             [name]: undefined,
         }));
     };
+
+    const handleChange2 = (event: SelectChangeEvent<typeof form.contaDestino>) => {
+        const { name, value } = event.target;
+        setForm((previousState) => ({
+            ...previousState,
+            [name]: { id: value },
+        }));
+
+        setErrors((previousState) => ({
+            ...previousState,
+            [name]: undefined,
+        }));
+    };
+
 
     const handleChangeTipoMovimentacao = (event: SelectChangeEvent<typeof form.tipoMovimentacao>) => {
         const { name, value } = event.target;
@@ -327,23 +343,25 @@ export function CadastroMovimentacaoPage() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid xs={12}>
-                                <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                                    <InputLabel id="demo-controlled-open-select-label">Conta de Destino</InputLabel>
-                                    <Select
-                                        id="outlined-select-currency"
-                                        name="contaDestino"
-                                        label="Conta de Destino"
-                                        value={form.contaDestino.id}
-                                        onChange={handleChange}>
-                                        {contas.map((option: IContaCadastro) => (
-                                            <MenuItem key={option.id} value={option.id}>
-                                                Numero: {option.numero} Banco: {option.banco}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
+                            {(form.tipoMovimentacao == "TransferenciaContasEntrada" || form.tipoMovimentacao == "TransferenciaContasSaida") && (
+                                <Grid xs={12}>
+                                    <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                        <InputLabel id="demo-controlled-open-select-label">Conta de Destino</InputLabel>
+                                        <Select
+                                            id="outlined-select-currency"
+                                            name="contaDestino"
+                                            label="Conta de Destino"
+                                            value={form.contaDestino.id}
+                                            onChange={handleChange2}>
+                                            {contas.map((option: IContaCadastro) => (
+                                                <MenuItem key={option.id} value={option.id}>
+                                                    Numero: {option.numero} Banco: {option.banco}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            )}
                             <Grid xs={12}>
                                 <ButtonWithProgress
                                     disabled={pendingApiCall}

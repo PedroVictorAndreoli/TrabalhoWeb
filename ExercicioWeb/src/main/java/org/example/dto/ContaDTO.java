@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 @AllArgsConstructor
 @Builder
 public class ContaDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     @NotNull
     private String numero;
